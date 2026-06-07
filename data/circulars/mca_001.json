@@ -1,0 +1,13 @@
+{
+  "id": "mca_001",
+  "regulator": "MCA",
+  "type": "corporate_governance",
+  "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/circulars.html",
+  "title": "Companies (Accounts) Second Amendment Rules 2023",
+  "expected_maps": [
+    "File CSR-2 form annually",
+    "Maintain CSR expenditure records for 3 years"
+  ],
+  "raw_text": "FETCH_FAILED: 403 Client Error: Forbidden for url: https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/circulars.html",
+  "fetched_at": "2026-06-07T16:57:04.294175"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "rbi_004",
+  "regulator": "RBI",
+  "type": "it_framework",
+  "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12579&Mode=0",
+  "title": "Master Direction on IT Governance Risk and Controls",
+  "expected_maps": [
+    "Board must approve IT strategy",
+    "Annual IS audit mandatory",
+    "BCP test every 6 months"
+  ],
+  "raw_text": "FETCH_FAILED: 'charmap' codec can't encode characters in position 99-103: character maps to <undefined>",
+  "fetched_at": "2026-06-07T16:57:01.154862"
+}

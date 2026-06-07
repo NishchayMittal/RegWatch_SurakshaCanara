@@ -1,0 +1,13 @@
+{
+  "id": "sebi_003",
+  "regulator": "SEBI",
+  "type": "listed_entities",
+  "url": "https://www.sebi.gov.in/legal/circulars/jul-2023/business-responsibility-and-sustainability-reporting_73854.html",
+  "title": "Business Responsibility and Sustainability Reporting (BRSR)",
+  "expected_maps": [
+    "Top 1000 listed entities to file BRSR",
+    "ESG assurance mandatory from FY2024-25"
+  ],
+  "raw_text": "FETCH_FAILED: 404 Client Error: Not Found for url: https://www.sebi.gov.in/legal/circulars/jul-2023/business-responsibility-and-sustainability-reporting_73854.html",
+  "fetched_at": "2026-06-07T16:57:03.625959"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "sebi_001",
+  "regulator": "SEBI",
+  "type": "mutual_funds",
+  "url": "https://www.sebi.gov.in/legal/circulars/mar-2024/review-of-norms-for-mutual-fund-lite-amcs_81213.html",
+  "title": "Review of Norms for Mutual Fund Lite AMCs",
+  "expected_maps": [
+    "Apply for MF Lite registration by Q3",
+    "Maintain reduced net worth of Rs 35 crore"
+  ],
+  "raw_text": "FETCH_FAILED: 404 Client Error: Not Found for url: https://www.sebi.gov.in/legal/circulars/mar-2024/review-of-norms-for-mutual-fund-lite-amcs_81213.html",
+  "fetched_at": "2026-06-07T16:57:02.771186"
+}
