@@ -71,7 +71,7 @@ CREATE TABLE sub_tasks (
     task_id INT REFERENCES tasks(id) ON DELETE CASCADE,
     description TEXT NOT NULL,
     status VARCHAR(30) DEFAULT 'pending'
-        CHECK (status IN ('pending', 'completed', 'disputed', 'escalated')),
+        CHECK (status IN ('pending','in_progress', 'completed', 'disputed', 'escalated')),
     completed_at TIMESTAMP,
     evidence_url VARCHAR(1000)
 );
