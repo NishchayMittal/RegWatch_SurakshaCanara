@@ -1,0 +1,48 @@
+Department: Treasury & Investments
+Regulator Relevance: RBI (primary), SEBI (secondary)
+
+HANDLES:
+- Capital adequacy requirements (CAR, CRAR under Basel III)
+- Cash Reserve Ratio (CRR) and Statutory Liquidity Ratio (SLR) maintenance
+- Liquidity Coverage Ratio (LCR) and Net Stable Funding Ratio (NSFR) compliance
+- Bond portfolio management and government securities (G-Sec) compliance
+- Interest rate risk management and reporting
+- Investment classification (HTM, AFS, HFT) as per RBI guidelines
+- Forex treasury operations and FEMA compliance
+- Derivatives policy and hedging compliance
+- Reporting to RBI under XBRL/OSMOS
+- ALM (Asset Liability Management) policy updates
+
+DOES NOT HANDLE:
+- KYC or customer onboarding (→ KYC/AML)
+- Loan provisioning or NPA classification (→ Credit Risk)
+- Equity trading compliance for customers (→ Retail Banking Compliance)
+- Staff conduct or insider trading by employees (→ HR & Conduct)
+- Audit of treasury operations (→ Audit & Inspection)
+
+KEYWORDS:
+CRR, SLR, LCR, NSFR, CAR, CRAR, Basel III, Tier 1, Tier 2, capital buffer,
+HTM, AFS, HFT, G-Sec, government securities, bond, treasury, ALM, FEMA,
+forex, derivatives, hedging, interest rate risk, XBRL, OSMOS, liquidity,
+investment portfolio, repo, reverse repo, MSF, LAF, OMO
+
+REAL REGULATORY REFERENCES:
+- RBI Master Circular on Prudential Norms for Classification and Valuation of Investments (updated annually)
+- RBI Basel III Capital Regulations (DBR.No.BP.BC.1/21.06.201/2015-16)
+- RBI Circular on Liquidity Coverage Ratio (RBI/2014-15/299)
+- RBI Master Direction on Foreign Investment in India (RBI/FED/2017-18/60)
+- RBI Circular on Net Stable Funding Ratio (RBI/2021-22/73)
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "All scheduled commercial banks shall maintain CRR at 4.50% of their Net Demand and Time Liabilities (NDTL) with effect from the fortnight beginning [date]. Non-compliance will attract penalty under Section 42(3) of the RBI Act, 1934."
+Correct Department: Treasury & Investments
+Confidence Signal: HIGH — keywords 'CRR', 'NDTL', 'scheduled commercial banks' are unambiguous treasury terms
+Penalty if missed: Rs. 100 per day per lakh of shortfall under RBI Act Section 42(3)
+
+SAMPLE MAP 2:
+Circular Source: RBI
+MAP Text: "Banks shall ensure that their Liquidity Coverage Ratio (LCR) is maintained at a minimum of 100% on an ongoing basis. Banks shall submit LCR returns to RBI in the prescribed format on a daily basis within 5 working days of end of month."
+Correct Department: Treasury & Investments
+Confidence Signal: HIGH — 'LCR', 'liquidity coverage ratio', 'returns to RBI' clearly maps to treasury
+Penalty if missed: Supervisory action under RBI Prompt Corrective Action (PCA) framework

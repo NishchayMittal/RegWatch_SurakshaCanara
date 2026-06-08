@@ -1,0 +1,54 @@
+Department: Legal & Regulatory Affairs
+Regulator Relevance: RBI (primary), SEBI (primary), MCA (primary)
+
+HANDLES:
+- Filing of regulatory returns, compliance certificates, and statutory reports to RBI/SEBI/MCA
+- Board resolution drafting for regulatory compliance actions
+- Corporate governance disclosures under SEBI LODR (Listing Obligations)
+- Companies Act filings — ROC, MCA21, annual returns, board composition changes
+- Legal interpretation of new circulars and regulatory advisories
+- Litigation management — regulatory show cause notices, penalties, appeals
+- Drafting of regulatory policies and internal frameworks mandated by circulars
+- Contracts with regulators (undertakings, consent orders, settlement proceedings)
+- Mergers, amalgamations, and acquisitions — RBI/CCI/NCLT regulatory approvals
+- FEMA legal compliance — ECB, FDI approvals, compounding applications
+- Consumer protection legal cases — Banking Ombudsman escalations to courts
+- Legal vetting of new products for regulatory permissibility
+- MCA compliance — director KYC (DIR-3), annual filings (MGT-7, AOC-4)
+
+DOES NOT HANDLE:
+- Operational implementation of compliance (each dept owns execution)
+- Employee conduct cases (→ HR & Conduct owns implementation)
+- IT vendor contracts primarily IT in nature (→ IT & Cybersecurity)
+- KYC procedures (→ KYC/AML)
+- Credit enforcement (SARFAESI filing is jointly with Credit Risk)
+
+KEYWORDS:
+legal, regulatory, LODR, listing obligations, corporate governance, board resolution,
+Companies Act, MCA, ROC, annual return, show cause notice, penalty, appeal,
+consent order, settlement, NCLT, merger, amalgamation, FEMA, ECB, FDI,
+compounding, banking ombudsman, litigation, RBI Act, SEBI Act, compliance certificate,
+statutory report, legal opinion, DIR-3, MGT-7, AOC-4, SEBI, RBI filing
+
+REAL REGULATORY REFERENCES:
+- SEBI (Listing Obligations and Disclosure Requirements) Regulations 2015 (LODR)
+- Companies Act 2013 and Companies (Amendment) Act 2020
+- RBI Act 1934 — Section 35A (directions), Section 47A (penalties)
+- SEBI Act 1992 — Chapter VIA (penalties and adjudication)
+- FEMA 1999 and RBI Master Directions on ECB / FDI
+- RBI Circular on Prompt Corrective Action (PCA) Framework
+- MCA General Circular on Annual Filings and Director KYC
+
+SAMPLE MAP 1:
+Circular Source: SEBI
+MAP Text: "Listed entities shall submit a compliance report on corporate governance to the stock exchanges within 21 days from the end of each quarter. The report shall be signed by the Compliance Officer or the CEO. Failure to submit the report within the prescribed timeline shall attract a fine of Rs. 5000 per day of non-compliance."
+Correct Department: Legal & Regulatory Affairs
+Confidence Signal: HIGH — 'corporate governance', 'compliance report', 'stock exchange filing', 'Compliance Officer' map to Legal
+Penalty if missed: Rs. 5000/day fine plus stock exchange notice; repeat defaults lead to SEBI adjudication proceedings
+
+SAMPLE MAP 2:
+Circular Source: MCA
+MAP Text: "Every director of a company who has been allotted a Director Identification Number (DIN) shall submit e-form DIR-3 KYC on the MCA21 portal on or before 30th September every year. Failure to file DIR-3 KYC shall result in deactivation of DIN and a late fee of Rs. 5000 shall be levied on subsequent filing."
+Correct Department: Legal & Regulatory Affairs
+Confidence Signal: HIGH — 'DIN', 'DIR-3 KYC', 'MCA21', 'director', 'ROC filing' are MCA legal compliance markers
+Penalty if missed: DIN deactivation; directors cannot function; Rs. 5000 late fee per director

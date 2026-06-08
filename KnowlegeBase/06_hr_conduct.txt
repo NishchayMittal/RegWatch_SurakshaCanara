@@ -1,0 +1,54 @@
+Department: HR & Conduct
+Regulator Relevance: RBI (primary), SEBI (secondary), MCA (tertiary)
+
+HANDLES:
+- Fit and Proper criteria for Directors and Key Managerial Personnel (KMP)
+- Compensation and remuneration policy for Whole Time Directors and risk-takers
+- Whistleblower policy and vigil mechanism (Companies Act + RBI)
+- Code of conduct for employees — insider trading policy, conflict of interest
+- Training and certification mandates for banking staff (JAIIB, CAIIB, AMFI, NISM)
+- Sexual harassment policy — POSH Act compliance
+- Staff accountability framework — penalties for frauds committed by employees
+- HR policies linked to governance — board diversity, succession planning
+- RBI guidelines on compensation of Key Managerial Personnel (variable pay caps)
+- Employee stock option scheme (ESOP) compliance under SEBI/Companies Act
+- Bonus policy aligned with RBI risk-adjustment norms
+- Recovery of compensation from senior staff involved in misconduct
+
+DOES NOT HANDLE:
+- Customer grievances or mis-selling investigations (→ Retail Banking Compliance)
+- IT system access controls (→ IT & Cybersecurity)
+- Audit of employee expenses (→ Audit & Inspection)
+- Legal proceedings against employees (→ Legal & Regulatory Affairs)
+- KYC of employees (→ KYC/AML owns KYC policy; HR owns employee records)
+
+KEYWORDS:
+fit and proper, KMP, key managerial personnel, director, remuneration,
+compensation, variable pay, whistleblower, vigil mechanism, code of conduct,
+insider trading, conflict of interest, JAIIB, CAIIB, AMFI, NISM, certification,
+training, POSH, sexual harassment, staff accountability, board diversity,
+succession planning, ESOP, bonus, clawback, malus, risk adjustment
+
+REAL REGULATORY REFERENCES:
+- RBI Guidelines on Compensation of Whole Time Directors / CEOs (RBI/2019-20/160)
+- RBI Master Circular on Fit and Proper Criteria for Directors (updated annually)
+- SEBI (Prohibition of Insider Trading) Regulations 2015 (amended 2020)
+- Companies Act 2013 — Section 177 (Audit Committee), Section 178 (Nomination & Remuneration)
+- RBI Staff Accountability Framework for NPA accounts (RBI/2019-20/219)
+- Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act 2013
+- NISM / AMFI certification mandates for mutual fund distribution staff
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "Banks shall put in place a Board-approved compensation policy for Whole Time Directors (WTDs), Chief Executive Officers (CEOs), Material Risk Takers (MRTs), and Control Function Staff. Variable pay shall not exceed 200% of fixed pay for WTDs/CEOs. At least 50% of variable pay shall be deferred for a period of not less than 3 years with clawback provisions."
+Correct Department: HR & Conduct
+Confidence Signal: HIGH — 'compensation policy', 'WTD', 'CEO', 'variable pay', 'clawback', 'material risk takers' map to HR
+Penalty if missed: RBI may direct bank to freeze variable pay payouts; governance red flag during supervisory review
+
+SAMPLE MAP 2:
+Circular Source: SEBI
+MAP Text: "All listed entities shall establish a vigil mechanism / whistle blower policy for directors and employees to report genuine concerns. The policy shall provide for direct access to the chairperson of the Audit Committee. Details of the vigil mechanism shall be disclosed on the company website and in the Board's report. The mechanism shall protect whistleblowers from victimisation."
+Correct Department: HR & Conduct
+Confidence Signal: MEDIUM-HIGH — 'vigil mechanism', 'whistle blower', 'employees', 'directors' map to HR; could confuse with Legal
+Boundary Note: Legal & Regulatory Affairs owns the legal framework; HR & Conduct owns the policy and implementation
+Penalty if missed: SEBI penalty for non-compliance with LODR; stock exchange may issue notice

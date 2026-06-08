@@ -1,0 +1,56 @@
+Department: Trade Finance
+Regulator Relevance: RBI (primary), SEBI (secondary — for ECB/FEMA)
+
+HANDLES:
+- Letters of Credit (LC) issuance, amendment, and compliance
+- Bank Guarantees (BG) — performance, financial, deferred payment
+- Export finance — Pre-shipment credit (packing credit), Post-shipment credit
+- Import finance — Buyers' credit, suppliers' credit, usance LC
+- FEMA regulations for trade transactions — reporting, repatriation of export proceeds
+- Export Data Processing and Monitoring System (EDPMS) compliance
+- Import Data Processing and Monitoring System (IDPMS) compliance
+- Authorised Dealer (AD) obligations for forex trade settlements
+- SWIFT messaging compliance for trade transactions
+- Incoterms and UCP 600 compliance for LC transactions
+- External Commercial Borrowings (ECB) for trade-linked purposes
+- Anti-dumping, sanctions screening on trade counterparties
+- Supply chain finance and factoring regulations
+- RBI directions on interest rates on export credit (PCFC, post-shipment)
+
+DOES NOT HANDLE:
+- Domestic working capital loans (→ Credit Risk)
+- Forex treasury positions (→ Treasury & Investments)
+- KYC of trade counterparties — customer onboarding (→ KYC/AML)
+- Legal contracts with trade counterparties (→ Legal & Regulatory Affairs)
+- Customs and DGFT regulatory compliance (outside bank scope — exporter's obligation)
+
+KEYWORDS:
+letter of credit, LC, bank guarantee, BG, export finance, import finance,
+packing credit, PCFC, post-shipment, buyers credit, suppliers credit, usance,
+FEMA, EDPMS, IDPMS, authorised dealer, AD category, repatriation, export proceeds,
+SWIFT, UCP 600, incoterms, ECB, trade finance, factoring, supply chain finance,
+foreign trade, correspondent bank, nostro, vostro, trade credit
+
+REAL REGULATORY REFERENCES:
+- RBI Master Direction on Export of Goods and Services (RBI/2016-17/294)
+- RBI Master Direction on Import of Goods and Services (RBI/2016-17/293)
+- RBI Master Direction on External Commercial Borrowings (RBI/2018-19/67)
+- RBI Circular on EDPMS — Export Data Processing and Monitoring System
+- RBI Circular on IDPMS — Import Data Processing and Monitoring System
+- RBI Master Circular on Interest Rates on Rupee Export Credit (updated annually)
+- Uniform Customs and Practice for Documentary Credits (UCP 600) — ICC
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "All Authorised Dealer banks shall ensure that export proceeds are repatriated to India within 9 months from the date of shipment for goods exported to all countries. In case of non-repatriation within the prescribed period, banks shall report the outstanding export bills to RBI through EDPMS and shall follow up with the exporter for realisation or regularisation under FEMA."
+Correct Department: Trade Finance
+Confidence Signal: HIGH — 'authorised dealer', 'export proceeds', 'EDPMS', 'FEMA', 'repatriation', 'shipment' are trade finance terms
+Penalty if missed: FEMA violation by the bank; compounding proceedings with RBI's Enforcement Department
+
+SAMPLE MAP 2:
+Circular Source: RBI
+MAP Text: "Banks shall not issue Letters of Undertaking (LoU) or Letters of Comfort (LoC) for trade credit for imports into India. Bills of undertaking issued as substitute for Letters of Credit will not be permitted. Banks must ensure all import-related credit facilities are backed by proper underlying trade documents and comply with KYC and AML checks before LC issuance."
+Correct Department: Trade Finance
+Confidence Signal: HIGH — 'LoU', 'Letter of Undertaking', 'import', 'trade credit', 'LC issuance' map to Trade Finance
+Boundary Note: KYC check requirement is a reminder step for Trade Finance; KYC/AML owns the KYC policy itself
+Penalty if missed: Regulatory action equivalent to Nirav Modi LoU fraud precedent — serious reputational and legal consequences
