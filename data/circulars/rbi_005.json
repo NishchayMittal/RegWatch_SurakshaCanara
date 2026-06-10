@@ -1,0 +1,14 @@
+{
+  "id": "rbi_005",
+  "regulator": "RBI",
+  "type": "priority_sector",
+  "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12527&Mode=0",
+  "title": "Priority Sector Lending - Targets and Classification",
+  "expected_maps": [
+    "40% of ANBC to PSL",
+    "18% to agriculture",
+    "Submit PSL return quarterly"
+  ],
+  "raw_text": "FETCH_FAILED: 'charmap' codec can't encode characters in position 99-103: character maps to <undefined>",
+  "fetched_at": "2026-06-07T16:57:02.339367"
+}

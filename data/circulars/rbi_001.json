@@ -1,0 +1,14 @@
+{
+  "id": "rbi_001",
+  "regulator": "RBI",
+  "type": "banking_regulation",
+  "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12683&Mode=0",
+  "title": "Master Direction - Know Your Customer (KYC) Direction, 2016 (Updated)",
+  "expected_maps": [
+    "Implement V-CIP for new customers",
+    "Update KYC records every 2 years for high-risk",
+    "File STR within 7 days"
+  ],
+  "raw_text": "FETCH_FAILED: 'charmap' codec can't encode characters in position 99-103: character maps to <undefined>",
+  "fetched_at": "2026-06-07T16:56:57.608756"
+}

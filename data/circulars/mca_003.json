@@ -1,0 +1,13 @@
+{
+  "id": "mca_003",
+  "regulator": "MCA",
+  "type": "insolvency",
+  "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/circulars.html",
+  "title": "IBBI (Insolvency Resolution Process for Corporate Persons) Amendment Regulations",
+  "expected_maps": [
+    "Update CoC meeting procedures",
+    "File CIRP progress report monthly"
+  ],
+  "raw_text": "FETCH_FAILED: 403 Client Error: Forbidden for url: https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/circulars.html",
+  "fetched_at": "2026-06-07T16:57:04.778665"
+}

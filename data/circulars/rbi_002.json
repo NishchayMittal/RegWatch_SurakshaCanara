@@ -1,0 +1,14 @@
+{
+  "id": "rbi_002",
+  "regulator": "RBI",
+  "type": "payment_systems",
+  "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12600&Mode=0",
+  "title": "Guidelines on Digital Lending",
+  "expected_maps": [
+    "Disclose APR to borrowers",
+    "Credit limit changes require borrower consent",
+    "Maintain loan servicing records"
+  ],
+  "raw_text": "FETCH_FAILED: 'charmap' codec can't encode characters in position 99-103: character maps to <undefined>",
+  "fetched_at": "2026-06-07T16:56:58.834110"
+}

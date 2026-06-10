@@ -1,0 +1,14 @@
+{
+  "id": "sebi_002",
+  "regulator": "SEBI",
+  "type": "brokers",
+  "url": "https://www.sebi.gov.in/legal/circulars/sep-2023/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res_76688.html",
+  "title": "Cybersecurity and Cyber Resilience Framework (CSCRF)",
+  "expected_maps": [
+    "Designate CISO",
+    "Submit cyber audit report annually",
+    "Incident reporting within 6 hours"
+  ],
+  "raw_text": "FETCH_FAILED: 404 Client Error: Not Found for url: https://www.sebi.gov.in/legal/circulars/sep-2023/cybersecurity-and-cyber-resilience-framework-cscrf-for-sebi-regulated-entities-res_76688.html",
+  "fetched_at": "2026-06-07T16:57:03.204167"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "rbi_003",
+  "regulator": "RBI",
+  "type": "forex",
+  "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12542&Mode=0",
+  "title": "Foreign Exchange Management (Overseas Investment) Regulations",
+  "expected_maps": [
+    "Report OI within 60 days",
+    "Obtain approval for indirect overseas investment > $1B"
+  ],
+  "raw_text": "FETCH_FAILED: 'charmap' codec can't encode characters in position 99-103: character maps to <undefined>",
+  "fetched_at": "2026-06-07T16:57:00.035493"
+}

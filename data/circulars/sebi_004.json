@@ -1,0 +1,13 @@
+{
+  "id": "sebi_004",
+  "regulator": "SEBI",
+  "type": "alternates",
+  "url": "https://www.sebi.gov.in/legal/circulars/aug-2023/operating-guidelines-for-self-sponsored-aifs_75118.html",
+  "title": "Operating Guidelines for Self-Sponsored AIFs",
+  "expected_maps": [
+    "Register as self-sponsored AIF",
+    "Disclose conflict of interest to investors"
+  ],
+  "raw_text": "FETCH_FAILED: 404 Client Error: Not Found for url: https://www.sebi.gov.in/legal/circulars/aug-2023/operating-guidelines-for-self-sponsored-aifs_75118.html",
+  "fetched_at": "2026-06-07T16:57:04.061829"
+}

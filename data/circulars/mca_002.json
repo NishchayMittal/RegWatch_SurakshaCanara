@@ -1,0 +1,13 @@
+{
+  "id": "mca_002",
+  "regulator": "MCA",
+  "type": "compliance_filing",
+  "url": "https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/circulars.html",
+  "title": "Extension of time for filing e-forms AOC-4 and MGT-7",
+  "expected_maps": [
+    "File AOC-4 by extended deadline",
+    "No additional fees till extended date"
+  ],
+  "raw_text": "FETCH_FAILED: 403 Client Error: Forbidden for url: https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/circulars.html",
+  "fetched_at": "2026-06-07T16:57:04.544037"
+}
