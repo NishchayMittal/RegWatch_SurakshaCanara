@@ -26,8 +26,14 @@ class StubMAPExtractor(BaseMAPExtractor):
         print("[STUB Extractor] Extracting MAPs...")
         return {
             "maps": [
-                {"action": "Submit compliance report by month end", "confidence": 0.91},
-                {"action": "Update KYC records for all customers", "confidence": 0.88}
+                {
+                    "action": "All scheduled commercial banks shall maintain CRR at 4.50% of their Net Demand and Time Liabilities effective from the fortnight beginning October 2024.",
+                    "confidence": 0.91
+                },
+                {
+                    "action": "Banks shall file Suspicious Transaction Reports (STRs) with FIU-IND within 7 days of concluding a transaction is suspicious.",
+                    "confidence": 0.88
+                }
             ],
             "confidence": 0.91
         }

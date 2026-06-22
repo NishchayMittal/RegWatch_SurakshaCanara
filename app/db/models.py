@@ -32,3 +32,34 @@ class AuditLog(Base):
     event = Column(String)
     details = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class Department(Base):
+    __tablename__ = "departments"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True)
+    tasks = relationship("Task", back_populates="department")
+
+class SLA(Base):
+    __tablename__ = "slas"
+    id = Column(Integer, primary_key=True)
+    department_id = Column(Integer, ForeignKey("departments.id"))
+    circular_source = Column(String)   # 'RBI', 'SEBI', 'MCA'
+    days_to_complete = Column(Integer)
+
+class Task(Base):
+    __tablename__ = "tasks"
+    id = Column(Integer, primary_key=True)
+    map_id = Column(Integer, ForeignKey("maps.id"))
+    department_id = Column(Integer, ForeignKey("departments.id"))
+    assigned_at = Column(DateTime, default=datetime.utcnow)
+    due_at = Column(DateTime)
+    status = Column(String, default="assigned")
+    notes = Column(Text)
+    department = relationship("Department", back_populates="tasks")
+
+class HumanReviewQueue(Base):
+    __tablename__ = "human_review_queue"
+    id = Column(Integer, primary_key=True)
+    map_id = Column(Integer, ForeignKey("maps.id"))
+    reason = Column(Text)
+    created_at = Column(DateTime, default=datetime.utcnow)

@@ -4,8 +4,9 @@ from app.agents.base import (
 )
 from app.agents.stubs import (
     StubWatcherAgent, StubDedupAgent,
-    StubMAPExtractor, StubRouterAgent, StubNotifierAgent
+    StubMAPExtractor, StubNotifierAgent
 )
+from app.agents.router_adapter import RouterAgentAdapter
 from sqlalchemy.orm import Session
 from app.db.models import Circular, MAPItem, AuditLog
 from datetime import datetime
@@ -24,7 +25,7 @@ class RegWatchPipeline:
         self.watcher = watcher or StubWatcherAgent()
         self.dedup = dedup or StubDedupAgent()
         self.extractor = extractor or StubMAPExtractor()
-        self.router = router or StubRouterAgent()
+        self.router = router or RouterAgentAdapter()
         self.notifier = notifier or StubNotifierAgent()
 
     def _log(self, event: str, details: str):

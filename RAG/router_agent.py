@@ -24,7 +24,7 @@ from langchain_community.vectorstores import Chroma
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-CHROMA_DIR      = "./chroma_store"
+CHROMA_DIR = os.path.join(os.path.dirname(__file__), "chroma_store")
 EMBED_MODEL     = "sentence-transformers/all-MiniLM-L6-v2"
 AUTO_ROUTE_THRESHOLD  = 0.75  
 HUMAN_REVIEW_THRESHOLD = 1.00  # above this distance → definitely needs human review
