@@ -50,3 +50,14 @@ class BaseNotifierAgent(ABC):
         Sends notification to assigned department
         """
         pass
+
+class BaseValidatorAgent(ABC):
+    @abstractmethod
+    def validate(self, map_id: int, evidence: dict, db) -> dict:
+        """
+        Returns: {
+            status: str,           # "complete" or "incomplete"
+            missing_items: list,   # list of missing requirements, empty if complete
+        }
+        """
+        pass

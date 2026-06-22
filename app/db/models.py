@@ -63,3 +63,24 @@ class HumanReviewQueue(Base):
     map_id = Column(Integer, ForeignKey("maps.id"))
     reason = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class HumanReviewMap(Base):
+    __tablename__ = "human_review_maps"
+    id = Column(Integer, primary_key=True)
+    circular_id = Column(Integer, ForeignKey("circulars.id"))
+    raw_extraction = Column(Text)   # the raw LLM output, for human to inspect
+    confidence = Column(Float)
+    status = Column(String, default="pending")  # pending, approved, rejected
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class Evidence(Base):
+    __tablename__ = "evidence"
+    id = Column(Integer, primary_key=True, index=True)
+    map_id = Column(Integer, ForeignKey("maps.id"))
+    description = Column(Text)
+    file_url = Column(String, nullable=True)
+    submitted_by = Column(String)
+    status = Column(String, default="submitted")  # submitted, accepted, rejected, incomplete
+    missing_items = Column(Text, nullable=True)    # comma-separated list of what's missing, if incomplete
+    created_at = Column(DateTime, default=datetime.utcnow)
+

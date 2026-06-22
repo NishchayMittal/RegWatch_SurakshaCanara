@@ -4,12 +4,18 @@ from app.agents.base import (
 )
 from app.agents.stubs import (
     StubWatcherAgent, StubDedupAgent,
-    StubMAPExtractor, StubNotifierAgent
+    StubMAPExtractor
 )
 from app.agents.router_adapter import RouterAgentAdapter
 from sqlalchemy.orm import Session
-from app.db.models import Circular, MAPItem, AuditLog
 from datetime import datetime
+from app.agents.watcher_adapter import WatcherAgentAdapter
+from app.agents.dedup_adapter import DedupAgentAdapter
+from app.agents.map_extractor import MAPExtractor
+from app.agents.notifier import NotifierAgent
+from app.db.models import Circular, MAPItem, AuditLog, HumanReviewMap
+import json
+# remove: from app.agents.stubs import StubNotifierAgent (if no longer needed elsewhere)
 
 class RegWatchPipeline:
     def __init__(
@@ -22,11 +28,12 @@ class RegWatchPipeline:
         notifier: BaseNotifierAgent = None,
     ):
         self.db = db
-        self.watcher = watcher or StubWatcherAgent()
-        self.dedup = dedup or StubDedupAgent()
-        self.extractor = extractor or StubMAPExtractor()
-        self.router = router or RouterAgentAdapter()
-        self.notifier = notifier or StubNotifierAgent()
+        self.watcher = watcher or WatcherAgentAdapter()
+        self.dedup = dedup or DedupAgentAdapter()
+        self.extractor = extractor or MAPExtractor()
+        self.router = router or RouterAgentAdapter(db=self.db)
+        self.notifier = notifier or NotifierAgent()
+        self.extractor = extractor or MAPExtractor()
 
     def _log(self, event: str, details: str):
         entry = AuditLog(
@@ -66,13 +73,26 @@ class RegWatchPipeline:
         self._log("circular_saved", f"id={circular.id}")
 
         # Step 4 — Extract MAPs
-        result = self.extractor.extract(doc)
+        # Step 4 — Extract MAPs
+        try:
+            result = self.extractor.extract(doc)
+        except Exception as e:
+            self._log("extraction_failed", f"error={str(e)}")
+            circular.status = "extraction_failed"
+            self.db.commit()
+            return {"status": "extraction_failed", "error": str(e)}
+
         self._log("maps_extracted", f"count={len(result['maps'])}, confidence={result['confidence']}")
 
         # Step 5 — Confidence gate
         if result["confidence"] < 0.85:
             self._log("low_confidence_queued", f"confidence={result['confidence']}")
-            print(f"[Gate] Low confidence ({result['confidence']}). Sent to human review queue.")
+            review_entry = HumanReviewMap(
+                circular_id=circular.id,
+                raw_extraction=json.dumps(result),
+                confidence=result["confidence"]
+            )
+            self.db.add(review_entry)
             circular.status = "needs_review"
             self.db.commit()
             return {"status": "needs_review", "confidence": result["confidence"]}
