@@ -1,0 +1,57 @@
+Department: IT & Cybersecurity
+Regulator Relevance: RBI (primary), SEBI (secondary), MCA (tertiary)
+
+HANDLES:
+- RBI IT Framework for Banks — governance, risk, and audit of IT systems
+- Cyber Security Framework implementation and annual review
+- Incident reporting to RBI CSITE (Cyber Security and IT Examination)
+- Business Continuity Planning (BCP) and Disaster Recovery (DR) testing
+- Data localisation — ensuring payment data is stored only in India
+- Core Banking Solution (CBS) change management and audit trail
+- Network security, penetration testing, and vulnerability assessments
+- Mobile banking and internet banking security standards
+- Third-party / vendor IT risk management
+- SWIFT Customer Security Programme (CSP) compliance
+- RBI guidelines on cloud computing adoption by banks
+- Payment system security — UPI, IMPS, RTGS, NEFT fraud prevention
+- API security for open banking / account aggregator framework
+- MCA21 system compliance for corporate reporting (where applicable)
+- SEBI cybersecurity framework for trading systems (where bank acts as broker)
+
+DOES NOT HANDLE:
+- Physical security of bank branches (→ Audit & Inspection)
+- Digital lending product policy (→ Retail Banking Compliance)
+- KYC system design policy (→ KYC/AML owns policy; IT implements)
+- Employee acceptable use policy violations (→ HR & Conduct)
+- Legal contracts with IT vendors (→ Legal & Regulatory Affairs)
+
+KEYWORDS:
+cybersecurity, IT framework, cyber incident, CSITE, BCP, DR, disaster recovery,
+business continuity, data localisation, payment data, CBS, core banking,
+penetration testing, VAPT, vulnerability, SWIFT, CSP, cloud computing,
+mobile banking, internet banking, API security, account aggregator, UPI,
+IMPS, RTGS, NEFT, third-party risk, vendor risk, ISO 27001, SOC 2,
+RBI IT examination, cyber fraud, phishing, ransomware, DDoS
+
+REAL REGULATORY REFERENCES:
+- RBI Cyber Security Framework for Banks (DBS.CO/CSITE/BC.11/33.01.001/2015-16)
+- RBI Master Direction on IT Framework for NBFC (RBI/DNBR/2017-18/55)
+- RBI guidelines on Storage of Payment System Data (RBI/2018-19/104) — data localisation
+- RBI Circular on Cloud Computing (RBI/2023-24/73)
+- RBI guidelines on SWIFT-related controls (RBI/2016-17/331)
+- SEBI Circular on Cybersecurity and Cyber Resilience Framework (SEBI/HO/MRD/2023)
+- RBI Circular on Outsourcing of IT Services (RBI/2023-24/60)
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "All banks shall report cyber security incidents to RBI (CSITE) within 2 to 6 hours of detection, depending on the severity of the incident, using the prescribed reporting format. Banks shall also submit a detailed post-incident report within 30 days. Banks shall designate a Chief Information Security Officer (CISO) at the Board level."
+Correct Department: IT & Cybersecurity
+Confidence Signal: HIGH — 'cyber security incidents', 'CSITE', 'CISO', 'incident reporting' are IT department markers
+Penalty if missed: RBI supervisory action; delayed reporting of major cyber incidents is treated as serious governance failure
+
+SAMPLE MAP 2:
+Circular Source: RBI
+MAP Text: "All payment system operators and payment system participants shall ensure that all data related to payment systems is stored only in India. Data stored abroad in the past shall be brought back and stored in India by [date]. A certificate of compliance shall be submitted to RBI within 90 days."
+Correct Department: IT & Cybersecurity
+Confidence Signal: HIGH — 'data localisation', 'payment system data', 'stored in India', 'certificate of compliance' map to IT
+Penalty if missed: RBI can cancel payment system authorisation; penalty under Payment and Settlement Systems Act 2007

@@ -1,0 +1,52 @@
+Department: Credit Risk
+Regulator Relevance: RBI (primary)
+
+HANDLES:
+- Non-Performing Asset (NPA) classification and provisioning norms
+- Income recognition and asset classification (IRAC norms)
+- Stressed asset resolution — IBC, SARFAESI, OTS, restructuring
+- Expected Credit Loss (ECL) provisioning framework (Ind AS 109)
+- Large Exposure Framework (LEF) — single borrower and group exposure limits
+- Sectoral exposure limits and concentration risk
+- Credit risk rating and internal rating-based (IRB) approach
+- Loan-to-Value (LTV) ratios for secured lending
+- Priority sector lending (PSL) compliance and targets
+- Risk-weighted assets (RWA) computation for credit risk
+- MSME restructuring and emergency credit lines
+- Resolution plans under RBI's Prudential Framework for Stressed Assets
+
+DOES NOT HANDLE:
+- CRR/SLR or liquidity ratios (→ Treasury & Investments)
+- KYC or customer onboarding decisions (→ KYC/AML)
+- Trading or market risk in investment portfolio (→ Treasury & Investments)
+- Legal enforcement of SARFAESI actions (→ Legal & Regulatory Affairs)
+- Fraud investigation in loan accounts (→ Audit & Inspection)
+
+KEYWORDS:
+NPA, GNPA, NNPA, NPA classification, provisioning, IRAC, stressed assets,
+restructuring, IBC, SARFAESI, OTS, ECL, Ind AS 109, large exposure, LEF,
+concentration risk, credit rating, IRB, LTV, priority sector, PSL, RWA,
+MSME, substandard, doubtful, loss asset, special mention account, SMA,
+resolution plan, prudential framework, write-off, technical write-off
+
+REAL REGULATORY REFERENCES:
+- RBI Master Circular on Income Recognition, Asset Classification and Provisioning (updated annually)
+- RBI Prudential Framework for Resolution of Stressed Assets (RBI/2019-20/203)
+- RBI Master Direction on Large Exposure Framework (RBI/2016-17/317)
+- RBI Circular on Implementation of Ind AS by Banks (DBR.BP.BC.No.29/21.07.001/2018-19)
+- RBI Master Directions on Priority Sector Lending (updated 2020)
+- RBI Circular on MSME Restructuring (RBI/2019-20/186)
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "All scheduled commercial banks shall classify accounts as Special Mention Account (SMA) on the basis of principal or interest payment overdue: SMA-0 (1-30 days), SMA-1 (31-60 days), SMA-2 (61-90 days). Banks shall report SMA status of all borrowers with aggregate exposure of Rs. 5 crore and above to CRILC on a weekly basis."
+Correct Department: Credit Risk
+Confidence Signal: HIGH — 'SMA', 'NPA classification', 'CRILC reporting', 'overdue' are unambiguous credit risk terms
+Penalty if missed: Regulatory action under RBI Supervisory Framework; delayed CRILC reporting attracts penalty
+
+SAMPLE MAP 2:
+Circular Source: RBI
+MAP Text: "Banks shall maintain provisions for Non-Performing Assets as follows: Sub-standard assets — 15% (secured), 25% (unsecured). Doubtful assets (up to 1 year) — 25%. Doubtful assets (1-3 years) — 40%. Doubtful assets (above 3 years) — 100%. Loss assets — 100%. Banks shall compute and report provision coverage ratio (PCR) quarterly."
+Correct Department: Credit Risk
+Confidence Signal: HIGH — 'NPA provisioning', 'substandard', 'doubtful', 'loss assets', 'PCR' are core credit risk terms
+Penalty if missed: Underprovisioning triggers RBI corrective action; misstatement of financials

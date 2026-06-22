@@ -1,0 +1,51 @@
+Department: KYC / AML
+Regulator Relevance: RBI (primary), SEBI (secondary), MCA (tertiary)
+
+HANDLES:
+- Know Your Customer (KYC) policy updates and re-KYC drives
+- Anti-Money Laundering (AML) program maintenance and staff training
+- Customer Due Diligence (CDD) and Enhanced Due Diligence (EDD) procedures
+- Suspicious Transaction Reports (STR) filing with Financial Intelligence Unit (FIU-IND)
+- Cash Transaction Reports (CTR) — transactions above Rs. 10 lakh
+- Politically Exposed Persons (PEP) screening and monitoring
+- Beneficial ownership identification for corporate accounts
+- FATF compliance and correspondent banking due diligence
+- Aadhaar-based eKYC and Video KYC (V-CIP) implementation
+- PMLA (Prevention of Money Laundering Act) obligations
+- Sanctions screening (UN, OFAC, EU lists)
+- Risk categorisation of customers (Low / Medium / High)
+
+DOES NOT HANDLE:
+- Capital adequacy or liquidity ratios (→ Treasury & Investments)
+- Loan underwriting or credit decisions (→ Credit Risk)
+- Securities trading compliance (→ Retail Banking Compliance)
+- Cybersecurity of KYC systems (→ IT & Cybersecurity)
+- Employee background checks (→ HR & Conduct)
+
+KEYWORDS:
+KYC, AML, CFT, CDD, EDD, STR, CTR, FIU, PMLA, PEP, beneficial owner,
+Aadhaar, eKYC, V-CIP, video KYC, sanctions, OFAC, FATF, money laundering,
+terrorist financing, re-KYC, customer due diligence, risk categorisation,
+periodic updation, OVD, officially valid document, CKYC, CKYCR
+
+REAL REGULATORY REFERENCES:
+- RBI Master Direction on KYC (RBI/2015-16/42, updated 2023) — the primary reference
+- RBI Circular on Video based Customer Identification Process (RBI/2019-20/163)
+- RBI Circular on Central KYC Records Registry (CKYCR) — DBR.AML.BC.No.19/14.01.001/2018-19
+- PMLA Rules 2005 and subsequent amendments (Ministry of Finance)
+- RBI Circular on Beneficial Ownership (DBR.AML.BC.No.44/14.01.001/2018-19)
+- SEBI Master Circular on AML/CFT for intermediaries (SEBI/HO/MIRSD/DOP/P/CIR/2022/86)
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "All Regulated Entities (REs) shall ensure periodic updation of KYC for existing customers. High risk customers: every 2 years. Medium risk: every 8 years. Low risk: every 10 years. REs shall put in place a board-approved policy for periodic updation by [date] and submit compliance certificate to RBI."
+Correct Department: KYC / AML
+Confidence Signal: HIGH — 'KYC', 'periodic updation', 'high risk customers', 'regulated entities' are unambiguous KYC terms
+Penalty if missed: Monetary penalty under Section 47 of PMLA — up to Rs. 1 lakh per day of default
+
+SAMPLE MAP 2:
+Circular Source: RBI
+MAP Text: "Banks shall file Suspicious Transaction Reports (STRs) with FIU-IND within 7 days of arriving at a conclusion that a transaction is suspicious. The Principal Officer designated under PMLA shall be responsible for timely filing. Banks shall maintain records of all STRs filed for a period of 5 years."
+Correct Department: KYC / AML
+Confidence Signal: HIGH — 'STR', 'FIU-IND', 'Principal Officer', 'PMLA' are definitive AML markers
+Penalty if missed: Criminal prosecution of Principal Officer under PMLA Section 12A; bank penalties up to Rs. 1 crore

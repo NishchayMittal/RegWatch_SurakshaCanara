@@ -1,0 +1,58 @@
+Department: Audit & Inspection
+Regulator Relevance: RBI (primary), SEBI (secondary), MCA (tertiary)
+
+HANDLES:
+- Concurrent audit, internal audit, and revenue audit of all banking operations
+- Statutory audit coordination with external auditors (RBI-approved CA firms)
+- Risk-Based Internal Audit (RBIA) framework implementation
+- RBI inspection — Annual Financial Inspection (AFI) and DAAA coordination
+- Long Form Audit Report (LFAR) preparation and submission
+- Fraud reporting to RBI — detection, classification, and filing of FMR-1/FMR-2
+- IS Audit (Information Systems Audit) of IT infrastructure
+- Revenue leakage detection and income audit
+- Compliance testing — checking all departments' adherence to regulatory mandates
+- Compliance monitoring of RBI/SEBI circulars across all departments
+- Reporting to Audit Committee of the Board
+- SEBI audit requirements for trading and depository operations
+- Tax audit coordination (Section 44AB of Income Tax Act)
+- Forensic audit initiation for suspected fraud cases
+- Physical security audits of branches and currency chests
+
+DOES NOT HANDLE:
+- Fixing of compliance gaps (each department owns remediation)
+- KYC policy (→ KYC/AML)
+- Credit decisions or NPA resolution (→ Credit Risk)
+- IT security implementation (→ IT & Cybersecurity implements; Audit reviews)
+- Legal proceedings from audit findings (→ Legal & Regulatory Affairs)
+
+KEYWORDS:
+audit, internal audit, concurrent audit, statutory audit, RBIA, risk-based audit,
+RBI inspection, AFI, LFAR, long form audit report, fraud, FMR-1, FMR-2,
+IS audit, information systems audit, revenue leakage, compliance testing,
+audit committee, board reporting, forensic audit, external auditor, ICAI,
+fraud reporting, early warning signals, EWS, red flags, branch audit,
+currency chest, tax audit, 44AB, SEBI audit, trading audit
+
+REAL REGULATORY REFERENCES:
+- RBI Guidelines on Risk-Based Internal Audit (RBI/2021-22/95)
+- RBI Master Directions on Frauds — Classification and Reporting (RBI/2016-17/254)
+- RBI Circular on Central Fraud Registry and CRILC integration
+- RBI Annual Financial Inspection (AFI) guidelines and DAAA framework
+- RBI Circular on Long Form Audit Report (LFAR) format (updated 2022)
+- ICAI Standards on Auditing (SA 200 series) for statutory audit
+- SEBI Circular on Audit Trail in Accounting Software (SEBI/HO/CFD/2022)
+- MCA Rules on Audit Trail in accounting records (Companies Accounts Rules 2021)
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "All commercial banks shall report frauds involving amounts of Rs. 1 lakh and above to RBI immediately on detection using the prescribed online reporting portal. Frauds of Rs. 1 crore and above shall be reported to the Central Fraud Monitoring Cell (CFMC) of RBI within 3 weeks of detection. Banks shall also file FIR with law enforcement agencies for all frauds above Rs. 1 crore."
+Correct Department: Audit & Inspection
+Confidence Signal: HIGH — 'fraud reporting', 'FMR', 'CFMC', 'detection', 'FIR' are audit and inspection department terms
+Penalty if missed: Non-reporting of fraud is itself treated as a serious regulatory violation; RBI may impose penalty under Banking Regulation Act
+
+SAMPLE MAP 2:
+Circular Source: RBI
+MAP Text: "Banks shall put in place a Risk-Based Internal Audit (RBIA) system. The internal audit function shall be independent of business lines and shall report directly to the Audit Committee of the Board. The Chief Internal Auditor (CIA) shall not be under the administrative control of the Chief Financial Officer. Annual audit plan shall be approved by the Audit Committee."
+Correct Department: Audit & Inspection
+Confidence Signal: HIGH — 'RBIA', 'internal audit', 'Chief Internal Auditor', 'Audit Committee', 'audit plan' map squarely to this department
+Penalty if missed: RBI rates internal audit deficiency as a significant governance weakness in CAMELS rating; impacts supervisory rating

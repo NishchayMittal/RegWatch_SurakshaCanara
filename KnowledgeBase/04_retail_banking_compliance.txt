@@ -1,0 +1,55 @@
+Department: Retail Banking Compliance
+Regulator Relevance: RBI (primary), SEBI (secondary)
+
+HANDLES:
+- Fair Practices Code (FPC) for retail lending
+- Interest rate transparency — MCLR, EBLR, reset clauses communication to customers
+- Most Important Terms and Conditions (MITC) for loan products
+- Grievance redressal mechanism — Banking Ombudsman compliance
+- RBI regulations on fees, charges, and penalties (fair and transparent pricing)
+- Digital lending guidelines — onboarding, disbursement, recovery conduct
+- Credit card regulations — interest computation, billing, dispute resolution
+- Deposit account regulations — savings, FD, RD, dormant accounts
+- Locker facility regulations (RBI revised guidelines 2022)
+- Customer compensation policy for unauthorised transactions
+- Financial inclusion — Jan Dhan, Basic Savings Bank Deposit Account (BSBDA)
+- RBI guidelines on outsourcing of financial services
+- Microfinance institution (MFI) lending norms for retail customers
+- SEBI investor grievance compliance for bank-linked investment products
+
+DOES NOT HANDLE:
+- Treasury or interbank operations (→ Treasury & Investments)
+- Corporate credit decisions (→ Credit Risk)
+- KYC onboarding procedures (→ KYC/AML)
+- Fraud in retail accounts (→ Audit & Inspection)
+- Employee incentive structures creating mis-selling risk (→ HR & Conduct)
+
+KEYWORDS:
+fair practices, FPC, MCLR, EBLR, interest rate reset, MITC, grievance,
+ombudsman, digital lending, fintech, fees, charges, prepayment, foreclosure,
+credit card, billing cycle, minimum due, dormant account, locker, BSBDA,
+Jan Dhan, financial inclusion, outsourcing, recovery agent, DRA,
+compensation policy, unauthorised transaction, chargeback, microfinance, MFI
+
+REAL REGULATORY REFERENCES:
+- RBI Master Direction on Fair Lending Practice — Penal Charges in Loan Accounts (RBI/2023-24/53)
+- RBI Guidelines on Digital Lending (RBI/2022-23/111)
+- RBI Master Direction on Credit Card and Debit Card (RBI/2022-23/92)
+- RBI Circular on Revision of Locker Agreement (RBI/2021-22/185)
+- RBI Integrated Ombudsman Scheme 2021
+- RBI Master Direction on Interest Rate on Deposits (updated 2022)
+- RBI Circular on Compensation Framework for Failed Transactions (RBI/2019-20/210)
+
+SAMPLE MAP 1:
+Circular Source: RBI
+MAP Text: "Banks shall not levy penal interest on loan accounts. Penal charges, if any, shall be levied only as penal charges (not as penal interest). The quantum of penal charges shall be reasonable and proportionate to non-compliance of material terms and conditions of the loan contract. Banks shall display the penal charges structure on their website and loan agreements by [date]."
+Correct Department: Retail Banking Compliance
+Confidence Signal: HIGH — 'penal charges', 'loan accounts', 'fair lending', 'website disclosure' point squarely to retail compliance
+Penalty if missed: Customer complaints to Banking Ombudsman; potential RBI enforcement action and public reprimand
+
+SAMPLE MAP 2:
+Circular Source: RBI
+MAP Text: "All regulated entities engaged in digital lending shall ensure that the loan disbursement is made directly to the bank account of the borrower. Disbursement to third-party accounts or wallets is prohibited. Recovery of loans shall be conducted only through regulated entities and not through unauthorised recovery agents. A standardised Key Fact Statement (KFS) shall be provided to all borrowers before loan execution."
+Correct Department: Retail Banking Compliance
+Confidence Signal: HIGH — 'digital lending', 'disbursement', 'recovery agents', 'KFS', 'borrower' are retail compliance markers
+Penalty if missed: RBI can direct entity to stop digital lending operations; reputational and legal risk
