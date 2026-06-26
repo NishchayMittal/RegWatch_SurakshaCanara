@@ -76,6 +76,14 @@ class DedupFilter:
 
     def __init__(self, store: DedupStore):
         self.store = store
+        from langchain_huggingface import HuggingFaceEmbeddings
+        self.embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2",
+            model_kwargs={"device": "cpu"},
+            encode_kwargs={"normalize_embeddings": True},
+        )
+        self.seen_titles = []
+        self.seen_embeddings = []
 
     # ── Public API ───────────────────────────────────────────────────────────
 
@@ -93,12 +101,27 @@ class DedupFilter:
             logger.info(f"Duplicate (title_hash): {doc.title[:60]}")
             return DedupResult(is_duplicate=True, reason="title_hash")
 
+        # Layer 3: Semantic Dedup
+        query_emb = self.embeddings.embed_query(doc.title)
+        if self.seen_embeddings:
+            import numpy as np
+            similarities = np.dot(self.seen_embeddings, query_emb)
+            max_sim = np.max(similarities)
+            if max_sim > 0.90:  # 90% threshold for duplicate
+                logger.info(f"Duplicate (semantic, score={max_sim:.2f}): {doc.title[:60]}")
+                return DedupResult(is_duplicate=True, reason="semantic")
+
         return DedupResult(is_duplicate=False)
 
     def mark_seen(self, doc: CircularDoc) -> None:
         """Persist hashes after pipeline successfully processes this doc."""
         title_hash = self._title_hash(doc.title)
         self.store.save_hashes(doc.url_hash, title_hash, doc)
+        
+        # Add to local cache for semantic dedup
+        query_emb = self.embeddings.embed_query(doc.title)
+        self.seen_titles.append(doc.title)
+        self.seen_embeddings.append(query_emb)
         logger.debug(f"Marked seen: {doc.title[:60]}")
 
     def filter_batch(self, docs: list[CircularDoc]) -> list[CircularDoc]:

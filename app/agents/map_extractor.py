@@ -54,36 +54,40 @@ class MAPExtractor(BaseMAPExtractor):
         pass  # no model needed
 
     def extract(self, doc: dict) -> dict:
-        text = doc["text"][:12000]
+        text = doc["text"][:15000]
         text = re.sub(r'\s+', ' ', text).strip()
+
+        # Split text into sentences roughly by period
+        sentences = re.split(r'\.', text)
 
         maps = []
         seen = set()
+        keywords = ['shall', 'must', 'required to', 'mandated to', 'advised to', 'directed to']
 
-        for pattern in OBLIGATION_PATTERNS:
-            matches = re.findall(pattern, text, re.IGNORECASE)
-            for match in matches:
-                match = match.strip()
+        for sentence in sentences:
+            sentence = sentence.strip()
+            
+            # Skip sentences that are too short or too long
+            if len(sentence) < 40 or len(sentence) > 800:
+                continue
 
-                if len(match) < 30 or len(match) > 500:
-                    continue
+            if any(noise in sentence.lower() for noise in NOISE_PHRASES):
+                continue
 
-                if any(noise in match.lower() for noise in NOISE_PHRASES):
-                    continue
-
-                key = match[:80].lower()
+            if any(re.search(r'\b' + kw + r'\b', sentence, re.IGNORECASE) for kw in keywords):
+                key = sentence[:80].lower()
                 if key in seen:
                     continue
                 seen.add(key)
 
-                if re.search(r'\bshall\b|\bmust\b', match, re.IGNORECASE):
+                if 'shall' in sentence.lower() or 'must' in sentence.lower():
                     confidence = 0.88
-                elif re.search(r'\brequired to\b|\bmandated\b', match, re.IGNORECASE):
+                elif 'required' in sentence.lower() or 'mandated' in sentence.lower():
                     confidence = 0.82
                 else:
                     confidence = 0.75
 
-                maps.append({"action": match, "confidence": confidence})
+                maps.append({"action": sentence + ".", "confidence": confidence})
 
         overall_confidence = round(sum(m["confidence"] for m in maps) / len(maps), 2) if maps else 0.0
 

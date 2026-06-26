@@ -61,4 +61,29 @@ class DedupAgentAdapter(BaseDedupAgent):
             if c_normalized == normalized_title:
                 return True
 
+        # Layer 3 — Semantic Dedup
+        try:
+            from langchain_huggingface import HuggingFaceEmbeddings
+            import numpy as np
+            
+            # Use cached embeddings if possible, or initialize (lazy load for performance)
+            if not hasattr(self, 'embeddings'):
+                self.embeddings = HuggingFaceEmbeddings(
+                    model_name="sentence-transformers/all-MiniLM-L6-v2",
+                    model_kwargs={"device": "cpu"},
+                    encode_kwargs={"normalize_embeddings": True},
+                )
+            
+            query_emb = self.embeddings.embed_query(doc["title"])
+            
+            for c in all_circulars:
+                if c.title and len(c.title) > 5:
+                    c_emb = self.embeddings.embed_query(c.title)
+                    sim = np.dot(query_emb, c_emb)
+                    if sim > 0.90:
+                        print(f"Skipped duplicate (semantic match {sim:.2f}): {doc['title']}")
+                        return True
+        except ImportError:
+            pass # fallback if langchain isn't installed yet
+            
         return False

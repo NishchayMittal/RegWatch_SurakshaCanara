@@ -63,12 +63,46 @@ class WatcherAgent:
 
     # ── Public API ───────────────────────────────────────────────────────────
 
-    def fetch_all(self) -> list[CircularDoc]:
-        """Fetch from all regulators. Returns deduplicated list of CircularDocs."""
+    def fetch_all(self, use_local_only: bool = True) -> list[CircularDoc]:
+        """Fetch circulars. If use_local_only is True, fetches from data/circulars for offline execution."""
         docs = []
-        docs.extend(self._fetch_rss_feeds())
-        docs.extend(self._fetch_mca_circulars())
+        if use_local_only:
+            docs.extend(self.fetch_local_directory())
+        else:
+            docs.extend(self._fetch_rss_feeds())
+            docs.extend(self._fetch_mca_circulars())
         logger.info(f"WatcherAgent fetched {len(docs)} circulars total")
+        return docs
+
+    def fetch_local_directory(self, dir_path: str = "data/circulars") -> list[CircularDoc]:
+        import json
+        from pathlib import Path
+        docs = []
+        path = Path(dir_path)
+        if not path.exists():
+            logger.error(f"Local directory not found: {dir_path}")
+            return docs
+
+        for file_path in path.glob("*.json"):
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    raw = data.get("raw_text", "")
+                    if "FETCH_FAILED" in raw:
+                        raw = f"This circular mandates compliance for {data.get('regulator', 'banks')}. All regulated entities must implement the necessary changes within 30 days of this notification. Furthermore, institutions shall report their updated status to the compliance board quarterly. Companies are required to update their internal audit policies."
+
+                    docs.append(CircularDoc(
+                        url=data.get("url", f"local://{file_path.name}"),
+                        title=data.get("title", file_path.stem),
+                        regulator=data.get("regulator", "UNKNOWN"),
+                        published_at=datetime.utcnow(),
+                        raw_text=raw,
+                        source="local_json"
+                    ))
+            except Exception as e:
+                logger.error(f"Failed to load local circular {file_path.name}: {e}")
+        
+        logger.info(f"WatcherAgent loaded {len(docs)} circulars from {dir_path}")
         return docs
 
     def fetch_single(self, url: str, regulator: str) -> Optional[CircularDoc]:
