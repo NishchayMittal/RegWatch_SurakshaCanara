@@ -174,10 +174,16 @@ class WatcherAgent:
 
             content_type = resp.headers.get("Content-Type", "")
 
-            if "pdf" in content_type:
-                # Stub — PDF extraction wired in Week 2
-                logger.warning(f"PDF skipped (stub): {url}")
-                return f"[PDF stub] {url}"
+            if "pdf" in content_type.lower() or url.lower().endswith(".pdf"):
+                import pdfplumber
+                from io import BytesIO
+                try:
+                    with pdfplumber.open(BytesIO(resp.content)) as pdf:
+                        text = "\n".join(page.extract_text() or "" for page in pdf.pages)
+                    return text if len(text) > 100 else None
+                except Exception as pdf_e:
+                    logger.error(f"PDF extraction failed for {url}: {pdf_e}")
+                    return None
 
             soup = BeautifulSoup(resp.text, "html.parser")
 
