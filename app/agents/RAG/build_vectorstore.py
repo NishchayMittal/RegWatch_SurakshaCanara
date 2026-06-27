@@ -17,16 +17,25 @@ Expected output:
 """
 
 import os
+import sys
 from pathlib import Path
-from langchain.schema import Document
+
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+except AttributeError:
+    pass
+
+from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 # ── Config ────────────────────────────────────────────────────────────────────
 
-KB_DIR        = Path("../KnowledgeBase")   # folder with your 9 .txt filesKB_DIR = Path("../KnowlegeBase")
+script_dir = Path(__file__).parent.resolve()
+KB_DIR     = (script_dir / "../../../KnowledgeBase").resolve()
+CHROMA_DIR = os.path.join(script_dir, "chroma_store")
 
-CHROMA_DIR    = "./chroma_store"         # where ChromaDB persists on disk
 EMBED_MODEL   = "sentence-transformers/all-MiniLM-L6-v2"
 
 # Map each filename to its department name

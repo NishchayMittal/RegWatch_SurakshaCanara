@@ -3,7 +3,7 @@ from app.db.models import Department, SLA
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../RAG"))
-from router_agent import RouterAgent as BRouterAgent
+from app.agents.RAG.router_agent import RouterAgent as BRouterAgent
 
 class RouterAgentAdapter(BaseRouterAgent):
     def __init__(self, db=None):
