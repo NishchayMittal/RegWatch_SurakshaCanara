@@ -960,17 +960,13 @@ elif st.session_state.active_page == "maps":
                 
                 # Pagination controls row
                 st.markdown("<div style='margin-top: 0.8rem;'></div>", unsafe_allow_html=True)
-                col_pg1, col_pg2, col_pg3 = st.columns([1.1, 1.8, 1.1])
-                with col_pg1:
-                    if st.button("Prev", disabled=(st.session_state.map_page <= 1), use_container_width=True, key="prev_page_btn"):
-                        st.session_state.map_page -= 1
-                        st.rerun()
-                with col_pg2:
-                    st.markdown(f"<div style='text-align: center; font-weight: 700; font-family: \"JetBrains Mono\", monospace; font-size: 0.72rem; height: 35px; display: flex; align-items: center; justify-content: center;'>Page {st.session_state.map_page} of {total_pages}</div>", unsafe_allow_html=True)
-                with col_pg3:
-                    if st.button("Next", disabled=(st.session_state.map_page >= total_pages), use_container_width=True, key="next_page_btn"):
-                        st.session_state.map_page += 1
-                        st.rerun()
+                if st.button("Prev", disabled=(st.session_state.map_page <= 1), use_container_width=True, key="prev_page_btn"):
+                    st.session_state.map_page -= 1
+                    st.rerun()
+                st.markdown(f"<div style='text-align: center; font-weight: 700; font-family: \"JetBrains Mono\", monospace; font-size: 0.72rem; padding: 5px 0;'>Page {st.session_state.map_page} of {total_pages}</div>", unsafe_allow_html=True)
+                if st.button("Next", disabled=(st.session_state.map_page >= total_pages), use_container_width=True, key="next_page_btn"):
+                    st.session_state.map_page += 1
+                    st.rerun()
             else:
                 st.info("No matching action points found.")
                 
