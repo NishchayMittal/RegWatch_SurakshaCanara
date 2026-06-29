@@ -33,7 +33,7 @@ st.markdown("""
 
 /* ── Global Styles & Force High Contrast Black Text ─── */
 html, body, [class*="css"], p, span, label, div, select, input, textarea, h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif !important;
+    font-family: 'DM Sans', sans-serif !important;
     color: #000000 !important;
 }
 
@@ -267,29 +267,62 @@ h1, h2, h3, .section-header {
 }
 
 /* ── Form Inputs (Fixed high-contrast white background & black text) ─── */
-div[data-baseweb="select"], div[data-baseweb="select"] > div, div[data-baseweb="input"] input, textarea, input {
+input, textarea, select, 
+div[data-baseweb="input"] input, 
+div[data-baseweb="select"] *, 
+.stTextArea textarea, 
+.stTextInput input, 
+.stNumberInput input, 
+.stSelectbox div,
+.stSelectbox span,
+.stSelectbox p,
+[data-baseweb="popover"] * {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+input, textarea, 
+div[data-baseweb="input"], 
+.stTextArea textarea, 
+.stTextInput input, 
+.stNumberInput input,
+div[data-baseweb="select"] {
     background-color: #ffffff !important;
     border: 2px solid #000000 !important;
     border-radius: 4px !important;
-    color: #000000 !important;
-    font-family: 'Inter', sans-serif !important;
 }
-div[data-baseweb="select"] * {
+
+/* Ensure disabled inputs and textareas have high-contrast black text and light background */
+textarea:disabled, input:disabled, [disabled], 
+.stTextArea textarea:disabled, .stTextInput input:disabled,
+div[data-baseweb="input"] input:disabled, textarea[disabled],
+.stTextArea textarea[disabled], .stTextInput input[disabled] {
     color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    background-color: #f1f1f1 !important;
+    opacity: 1 !important;
+    border-color: #000000 !important;
 }
+
 /* Style dropdown lists when open */
-div[role="listbox"], li[role="option"] {
+div[role="listbox"], li[role="option"], li[role="option"] * {
     background-color: #ffffff !important;
     color: #000000 !important;
+    font-family: 'DM Sans', sans-serif !important;
 }
+
 /* Ensure option values have black text and white backgrounds */
 div[data-baseweb="popover"] * {
     background-color: #ffffff !important;
     color: #000000 !important;
 }
+
 /* Custom high-contrast placeholders */
-::placeholder, textarea::placeholder, input::placeholder {
+::placeholder, textarea::placeholder, input::placeholder,
+.stTextArea textarea::placeholder, .stTextInput input::placeholder {
     color: #555555 !important;
+    -webkit-text-fill-color: #555555 !important;
     opacity: 1 !important;
 }
 
@@ -676,7 +709,7 @@ if "prev_search_sla" not in st.session_state:
 
 # ─── TOP NAVIGATION NAVBAR ────────────────────────────────────────────────────
 if st.session_state.active_page != "home":
-    nav_cols = st.columns([1.3, 1.0, 1.0, 1.0, 1.0])
+    nav_cols = st.columns([1.0, 1.0, 1.0, 1.0, 1.0])
     
     with nav_cols[0]:
         st.markdown("""
@@ -1001,7 +1034,7 @@ elif st.session_state.active_page == "maps":
                             file_url = st.text_input("Supporting Document URL", placeholder="https://internal.bank/policy.pdf", key=f"file_{row['id']}")
                             submitted_by = st.text_input("Approving Department", value=row['assigned_department'], key=f"by_{row['id']}")
                             
-                            submit_btn = st.form_submit_button(label="Submit Evidence")
+                            submit_btn = st.form_submit_button(label="Submit Evidence", use_container_width=True)
                             
                             if submit_btn:
                                 if not desc or len(desc.strip()) < 10:
@@ -1115,7 +1148,7 @@ elif st.session_state.active_page == "review":
                 assigned_dept = st.selectbox("Assigned Department", departments_list, index=0)
                 sla_days = st.number_input("SLA Days (Deadline)", min_value=1, max_value=360, value=7)
                 
-                approve_btn = st.form_submit_button("Approve and Route Task")
+                approve_btn = st.form_submit_button("Approve and Route Task", use_container_width=True)
                 
                 if approve_btn:
                     if not action_text or len(action_text.strip()) < 10:
