@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neo-mint: #d2fae5;
+  --color-neo-lilac: #f5d1fe;
+  --color-neo-sky: #b7eaf6;
+  --color-neo-butter: #fef3c8;
+  --color-neo-pink: #fae9ff;
+  --color-neo-accent: #a3e635;
+  --color-neo-gray: #f5f5f4;
+  --color-neo-dark: #1c1917;
+  --color-neo-card: #ffffff;
+  
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1c1917;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Custom Neo-Brutalist Utility Classes */
+.neo-border {
+  border: 3px solid #000000 !important;
+}
+
+.neo-border-md {
+  border: 2.5px solid #000000 !important;
+}
+
+.neo-border-sm {
+  border: 2px solid #000000 !important;
+}
+
+.neo-shadow {
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+.neo-shadow-lg {
+  box-shadow: 6px 6px 0px 0px #000000 !important;
+}
+
+.neo-shadow-sm {
+  box-shadow: 2px 2px 0px 0px #000000 !important;
+}
+
+.neo-button {
+  background-color: #ffffff;
+  border: 2.5px solid #000000;
+  box-shadow: 3px 3px 0px 0px #000000;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.neo-button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.neo-button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px 0px #000000;
+}

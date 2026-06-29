@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 from app.db.database import get_db
-from app.db.models import Circular, MAPItem, Evidence, AuditLog, HumanReviewMap
+from app.db.models import Circular, MAPItem, Evidence, AuditLog, HumanReviewMap, Task, Department
 from app.core.orchestrator import RegWatchPipeline
 from app.agents.validator import ValidatorAgent
 from app.agents.stubs import StubNotifierAgent  # already used elsewhere
@@ -132,3 +133,96 @@ def get_evidence_history(map_id: int, db: Session = Depends(get_db)):
         }
         for e in records
     ]
+
+@router.get("/stats")
+def get_dashboard_stats(db: Session = Depends(get_db)):
+    total_circulars = db.query(Circular).count()
+    pending_maps = db.query(MAPItem).filter(MAPItem.status != "complete").count()
+    complete_maps = db.query(MAPItem).filter(MAPItem.status == "complete").count()
+    needs_review = db.query(HumanReviewMap).filter(HumanReviewMap.status == "pending").count()
+    return {
+        "total_circulars": total_circulars,
+        "pending_maps": pending_maps,
+        "complete_maps": complete_maps,
+        "needs_review": needs_review
+    }
+
+@router.get("/audit-logs")
+def list_audit_logs(db: Session = Depends(get_db)):
+    logs = db.query(AuditLog).order_by(AuditLog.created_at.desc()).limit(20).all()
+    return [
+        {
+            "id": l.id,
+            "event": l.event,
+            "details": l.details,
+            "created_at": l.created_at
+        }
+        for l in logs
+    ]
+
+@router.get("/departments")
+def list_departments(db: Session = Depends(get_db)):
+    depts = db.query(Department).all()
+    return [{"id": d.id, "name": d.name} for d in depts]
+
+class RouteTaskRequest(BaseModel):
+    review_id: int
+    action_text: str
+    department_name: str
+    sla_days: int
+
+@router.post("/tasks/route")
+def route_human_review_task(req: RouteTaskRequest, db: Session = Depends(get_db)):
+    from datetime import timedelta
+    
+    # 1. Fetch the pending review circular map
+    hr_map = db.query(HumanReviewMap).filter(HumanReviewMap.id == req.review_id).first()
+    if not hr_map:
+        return {"error": "HumanReviewMap item not found"}
+        
+    # 2. Fetch the department record
+    dept_rec = db.query(Department).filter(Department.name == req.department_name).first()
+    dept_id = dept_rec.id if dept_rec else None
+    
+    # 3. Create the concrete MAPItem
+    map_item = MAPItem(
+        circular_id=hr_map.circular_id,
+        action=req.action_text,
+        assigned_department=req.department_name,
+        sla_days=req.sla_days,
+        status="pending",
+        confidence=0.95,
+        created_at=datetime.utcnow()
+    )
+    db.add(map_item)
+    db.flush()
+    
+    # 4. Create the assigned department Task
+    due_date = datetime.utcnow() + timedelta(days=req.sla_days)
+    task_item = Task(
+        map_id=map_item.id,
+        department_id=dept_id,
+        status="pending",
+        due_at=due_date,
+        assigned_at=datetime.utcnow()
+    )
+    db.add(task_item)
+    
+    # 5. Mark human review map as approved
+    hr_map.status = "approved"
+    
+    # 6. Mark circular as done
+    circular = db.query(Circular).filter(Circular.id == hr_map.circular_id).first()
+    if circular:
+        circular.status = "done"
+        
+    # 7. Audit log creation
+    audit = AuditLog(
+        event="human_review_approved",
+        details=f"Human approved MAP {map_item.id} for Circular {circular.id if circular else hr_map.circular_id}.",
+        created_at=datetime.utcnow()
+    )
+    db.add(audit)
+    db.commit()
+    
+    return {"status": "ok", "map_id": map_item.id, "task_id": task_item.id}
