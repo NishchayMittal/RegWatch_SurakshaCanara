@@ -45,7 +45,7 @@ def list_circulars(db: Session = Depends(get_db)):
 @router.get("/circulars/{circular_id}/maps")
 def get_maps(circular_id: int, db: Session = Depends(get_db)):
     maps = db.query(MAPItem).filter(MAPItem.circular_id == circular_id).all()
-    return [{"id": m.id, "action": m.action, "department": m.assigned_department, "status": m.status} for m in maps]
+    return [{"id": m.id, "action": m.action, "department": m.assigned_department, "status": m.status, "confidence": m.confidence} for m in maps]
 
 @router.get("/queue/human-review")
 def human_review_queue(db: Session = Depends(get_db)):

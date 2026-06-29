@@ -332,9 +332,12 @@ export default function Home() {
           {/* Card Top Nav header */}
           <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 border-b border-black/10 pb-4">
             <div className="flex items-center gap-3">
-              <span className="bg-neo-accent font-extrabold text-sm px-3 py-1 border-2 border-black rounded-[6px] neo-shadow-sm">
+              <button 
+                onClick={() => setConsoleLaunched(false)}
+                className="bg-neo-accent font-extrabold text-sm px-3 py-1 border-2 border-black rounded-[6px] neo-shadow-sm cursor-pointer hover:translate-x-[-1px] hover:translate-y-[-1px] hover:neo-shadow active:translate-x-[1px] active:translate-y-[1px] active:neo-shadow-sm transition-all"
+              >
                 RegWatch
-              </span>
+              </button>
             </div>
 
             {/* Nav tabs */}
@@ -447,13 +450,21 @@ export default function Home() {
                 <div className="mt-4 border-t border-black/10 pt-4 flex flex-col gap-2">
                   <span className="text-xs font-extrabold uppercase text-gray-500">Compliance Metrics</span>
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-neo-sky p-2 border-2 border-black flex flex-col justify-center">
-                      <span className="text-[9px] font-extrabold uppercase">Ingested</span>
+                    <div className="bg-neo-lilac p-2 border-2 border-black flex flex-col justify-center">
+                      <span className="text-[9px] font-extrabold uppercase font-mono">Ingested</span>
                       <span className="text-xl font-extrabold font-mono">{stats.total_circulars}</span>
                     </div>
                     <div className="bg-neo-butter p-2 border-2 border-black flex flex-col justify-center">
-                      <span className="text-[9px] font-extrabold uppercase">Pending</span>
+                      <span className="text-[9px] font-extrabold uppercase font-mono">Pending</span>
                       <span className="text-xl font-extrabold font-mono">{stats.pending_maps}</span>
+                    </div>
+                    <div className="bg-neo-mint p-2 border-2 border-black flex flex-col justify-center">
+                      <span className="text-[9px] font-extrabold uppercase font-mono">Complete</span>
+                      <span className="text-xl font-extrabold font-mono">{stats.complete_maps}</span>
+                    </div>
+                    <div className="bg-neo-sky p-2 border-2 border-black flex flex-col justify-center">
+                      <span className="text-[9px] font-extrabold uppercase font-mono">Review</span>
+                      <span className="text-xl font-extrabold font-mono">{stats.needs_review}</span>
                     </div>
                   </div>
                 </div>
@@ -744,14 +755,6 @@ export default function Home() {
                       </div>
                       <h4 className="font-extrabold text-sm text-neo-dark mt-2 leading-snug">{c.title}</h4>
                     </div>
-                    <a 
-                      href={c.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-xs font-bold text-blue-600 hover:underline mt-4 inline-flex items-center gap-1"
-                    >
-                      Download Circular <ArrowRight className="w-3.5 h-3.5" />
-                    </a>
                   </div>
                 ))}
               </div>

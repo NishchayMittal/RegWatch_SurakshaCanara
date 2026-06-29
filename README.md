@@ -27,11 +27,44 @@ python run_demo.py
 
 *Note: Depending on your CPU, it may take 30-45 seconds to load the HuggingFace models into memory and process the documents.*
 
-### 2. View the Real-time Dashboard
-Once the pipeline has completed, you can view the compliance metrics, parsed circulars, and assigned MAPs using the Streamlit dashboard:
+### 2. View the Next.js Compliance Console Dashboard
+Once the pipeline has completed, you can view the compliance metrics, parsed circulars, and assigned MAPs using the Next.js dashboard portal.
 
-```bash
-streamlit run dashboard.py
+#### Method A: Start Automatically (Recommended)
+You can launch both the FastAPI backend and Next.js frontend concurrently using the provided PowerShell script from the project root:
+```powershell
+.\RegWatch_SurakshaCanara\run_project.ps1
 ```
 
-A browser window will open at `http://localhost:8501/` displaying the RegWatch dashboard.
+#### Method B: Start Manually (Backend and Frontend Separately)
+If you prefer starting each service individually, open two terminal windows:
+
+1. **Terminal 1: FastAPI Python Backend Server**
+   * Change directory to the python project root:
+     ```bash
+     cd C:\Users\mhask\Desktop\canara\RegWatch_SurakshaCanara
+     ```
+   * Install Python packages:
+     ```bash
+     pip install -r requirements.txt
+     ```
+   * Start the ASGI server on port 8000:
+     ```bash
+     uvicorn main:app --port 8000 --reload
+     ```
+
+2. **Terminal 2: Next.js Frontend Client**
+   * Change directory to the frontend folder:
+     ```bash
+     cd C:\Users\mhask\Desktop\canara\RegWatch_SurakshaCanara\frontend
+     ```
+   * Install Node.js packages:
+     ```bash
+     npm install
+     ```
+   * Start the Next.js dev server on port 3000:
+     ```bash
+     npm run dev
+     ```
+
+*Once both are running, open your web browser and navigate to **`http://localhost:3000`**.*
