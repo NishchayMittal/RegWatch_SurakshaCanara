@@ -282,15 +282,32 @@ div[data-baseweb="select"] *,
     font-family: 'DM Sans', sans-serif !important;
 }
 
-input, textarea, 
-div[data-baseweb="input"], 
-.stTextArea textarea, 
-.stTextInput input, 
-.stNumberInput input,
-div[data-baseweb="select"] {
-    background-color: #ffffff !important;
+/* Apply single neobrutalist border only to outer input & select box wrappers */
+div[data-baseweb="input"],
+div[data-baseweb="select"],
+.stTextArea textarea,
+.stTextInput input,
+.stNumberInput input {
     border: 2px solid #000000 !important;
     border-radius: 4px !important;
+}
+
+/* Clear borders & backgrounds on nested inner wrapper elements to prevent double lines or black leak-through */
+div[data-baseweb="input"] > div,
+div[data-baseweb="select"] > div,
+div[role="combobox"] {
+    border: none !important;
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+/* Force solid white backgrounds on outer inputs and select lists */
+div[data-baseweb="input"],
+div[data-baseweb="select"],
+input,
+textarea {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
 }
 
 /* Ensure disabled inputs and textareas have high-contrast black text and light background */
@@ -451,10 +468,20 @@ if (!parentDoc.getElementById('particles-canvas')) {
     
     function initNodes() {
         nodes = [];
-        const count = 32;
+        const count = 34;
+        const leftExcl = canvas.width * 0.28;
+        const rightExcl = canvas.width * 0.72;
+        
         for (let i = 0; i < count; i++) {
+            // Generate node strictly outside the center columns
+            let rx = Math.random() * canvas.width;
+            if (rx > leftExcl && rx < rightExcl) {
+                // Push it to left or right flank
+                rx = Math.random() < 0.5 ? Math.random() * leftExcl : rightExcl + Math.random() * (canvas.width - rightExcl);
+            }
+            
             nodes.push({
-                x: Math.random() * canvas.width,
+                x: rx,
                 y: Math.random() * canvas.height,
                 vx: (Math.random() - 0.5) * 0.9,
                 vy: (Math.random() - 0.5) * 0.9,
@@ -492,13 +519,18 @@ if (!parentDoc.getElementById('particles-canvas')) {
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // 1. Update node physics
+            const leftExcl = canvas.width * 0.28;
+            const rightExcl = canvas.width * 0.72;
+            const topExcl = canvas.height * 0.16;
+            const botExcl = canvas.height * 0.76;
+            
+            // 1. Process node updates and deflector shield bounces
             for (let i = 0; i < nodes.length; i++) {
                 let n = nodes[i];
                 n.x += n.vx;
                 n.y += n.vy;
                 
-                // Cursor evasion force (safe from division by zero)
+                // Cursor evasion force
                 if (mouseX > 0 && mouseY > 0) {
                     const dx = n.x - mouseX;
                     const dy = n.y - mouseY;
@@ -510,11 +542,9 @@ if (!parentDoc.getElementById('particles-canvas')) {
                     }
                 }
                 
-                // Drag friction
                 n.vx *= 0.96;
                 n.vy *= 0.96;
                 
-                // Keep moving slowly
                 const speed = Math.sqrt(n.vx*n.vx + n.vy*n.vy);
                 if (speed < 0.25) {
                     n.vx += (Math.random() - 0.5) * 0.35;
@@ -525,14 +555,50 @@ if (!parentDoc.getElementById('particles-canvas')) {
                     n.vy = (n.vy / speed) * 1.5;
                 }
                 
-                // Screen boundary bounce
+                // Outer boundaries
                 if (n.x < 15) { n.x = 15; n.vx *= -1; }
                 if (n.x > canvas.width - 15) { n.x = canvas.width - 15; n.vx *= -1; }
                 if (n.y < 15) { n.y = 15; n.vy *= -1; }
                 if (n.y > canvas.height - 15) { n.y = canvas.height - 15; n.vy *= -1; }
+                
+                // Center box boundaries (Deflector Shield)
+                if (n.x > leftExcl && n.x < rightExcl && n.y > topExcl && n.y < botExcl) {
+                    const dL = n.x - leftExcl;
+                    const dR = rightExcl - n.x;
+                    const dT = n.y - topExcl;
+                    const dB = botExcl - n.y;
+                    const minDist = Math.min(dL, dR, dT, dB);
+                    
+                    if (minDist === dL) {
+                        n.x = leftExcl - 2;
+                        n.vx = -Math.abs(n.vx) * 0.9;
+                    } else if (minDist === dR) {
+                        n.x = rightExcl + 2;
+                        n.vx = Math.abs(n.vx) * 0.9;
+                    } else if (minDist === dT) {
+                        n.y = topExcl - 2;
+                        n.vy = -Math.abs(n.vy) * 0.9;
+                    } else {
+                        n.y = botExcl + 2;
+                        n.vy = Math.abs(n.vy) * 0.9;
+                    }
+                }
             }
             
-            // 2. Draw filled network triangles (any 3 nodes closer than 170px)
+            // Helper to block lines crossing through the center area
+            const isCrossingCenter = (p1, p2) => {
+                const midX = (p1.x + p2.x) / 2;
+                const midY = (p1.y + p2.y) / 2;
+                const q1x = p1.x * 0.75 + p2.x * 0.25;
+                const q1y = p1.y * 0.75 + p2.y * 0.25;
+                const q2x = p1.x * 0.25 + p2.x * 0.75;
+                const q2y = p1.y * 0.25 + p2.y * 0.75;
+                
+                const checkPt = (x, y) => (x > leftExcl && x < rightExcl && y > topExcl && y < botExcl);
+                return checkPt(midX, midY) || checkPt(q1x, q1y) || checkPt(q2x, q2y);
+            };
+            
+            // 2. Draw crystal shard triangles
             const connectionLimit = 170;
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
@@ -540,7 +606,7 @@ if (!parentDoc.getElementById('particles-canvas')) {
                     const dy1 = nodes[i].y - nodes[j].y;
                     const dist1 = Math.sqrt(dx1*dx1 + dy1*dy1);
                     
-                    if (dist1 < connectionLimit) {
+                    if (dist1 < connectionLimit && !isCrossingCenter(nodes[i], nodes[j])) {
                         for (let k = j + 1; k < nodes.length; k++) {
                             const dx2 = nodes[j].x - nodes[k].x;
                             const dy2 = nodes[j].y - nodes[k].y;
@@ -550,7 +616,10 @@ if (!parentDoc.getElementById('particles-canvas')) {
                             const dy3 = nodes[k].y - nodes[i].y;
                             const dist3 = Math.sqrt(dx3*dx3 + dy3*dy3);
                             
-                            if (dist2 < connectionLimit && dist3 < connectionLimit) {
+                            if (dist2 < connectionLimit && dist3 < connectionLimit && 
+                                !isCrossingCenter(nodes[j], nodes[k]) && 
+                                !isCrossingCenter(nodes[k], nodes[i])) {
+                                
                                 ctx.fillStyle = nodes[i].color;
                                 ctx.beginPath();
                                 ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -559,7 +628,6 @@ if (!parentDoc.getElementById('particles-canvas')) {
                                 ctx.closePath();
                                 ctx.fill();
                                 
-                                // Draw thin black borders around crystal shards
                                 ctx.strokeStyle = 'rgba(0, 0, 0, 0.04)';
                                 ctx.lineWidth = 1.0;
                                 ctx.stroke();
@@ -577,7 +645,7 @@ if (!parentDoc.getElementById('particles-canvas')) {
                     const dx = nodes[i].x - nodes[j].x;
                     const dy = nodes[i].y - nodes[j].y;
                     const dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < connectionLimit) {
+                    if (dist < connectionLimit && !isCrossingCenter(nodes[i], nodes[j])) {
                         ctx.beginPath();
                         ctx.moveTo(nodes[i].x, nodes[i].y);
                         ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -588,13 +656,11 @@ if (!parentDoc.getElementById('particles-canvas')) {
             
             // 4. Draw node dots and float labels
             nodes.forEach(n => {
-                // Dot
                 ctx.fillStyle = '#000000';
                 ctx.beginPath();
                 ctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Floating neobrutalist badge
                 if (n.labelText) {
                     ctx.save();
                     ctx.translate(n.x + 10, n.y - 12);
@@ -604,18 +670,15 @@ if (!parentDoc.getElementById('particles-canvas')) {
                     const tw = ctx.measureText(text).width + 8;
                     const th = 13;
                     
-                    // Shadow
                     ctx.fillStyle = '#000000';
                     ctx.fillRect(1.5, 1.5, tw, th);
                     
-                    // Card
                     ctx.fillStyle = '#ffffff';
                     ctx.strokeStyle = '#000000';
                     ctx.lineWidth = 1.5;
                     ctx.fillRect(0, 0, tw, th);
                     ctx.strokeRect(0, 0, tw, th);
                     
-                    // Text
                     ctx.fillStyle = '#000000';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
@@ -623,6 +686,7 @@ if (!parentDoc.getElementById('particles-canvas')) {
                     ctx.restore();
                 }
             });
+            
         } else {
             ctx.fillStyle = '#fafaf9';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -644,23 +708,6 @@ if (!parentDoc.getElementById('particles-canvas')) {
                 ctx.lineTo(canvas.width, y);
                 ctx.stroke();
             }
-        }
-        
-        // Ripples draw
-        for (let i = 0; i < ripples.length; i++) {
-            const r = ripples[i];
-            r.r += 3.0;
-            r.alpha -= 0.02;
-            if (r.alpha <= 0) {
-                ripples.splice(i, 1);
-                i--;
-                continue;
-            }
-            ctx.beginPath();
-            ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(163, 230, 53, ' + r.alpha.toFixed(2) + ')';
-            ctx.lineWidth = 2.0;
-            ctx.stroke();
         }
         
         requestAnimationFrame(draw);
@@ -874,7 +921,7 @@ elif st.session_state.active_page == "maps":
 
         # Audit Logs
         st.markdown('<div class="section-header">Compliance <span class="accent">Logs</span></div>', unsafe_allow_html=True)
-        audit_df = fetch_data("SELECT event_type, description, created_at FROM audit_logs ORDER BY created_at DESC LIMIT 4")
+        audit_df = fetch_data("SELECT event as event_type, details as description, created_at FROM audit_log ORDER BY created_at DESC LIMIT 4")
         if not audit_df.empty:
             for _, log in audit_df.iterrows():
                 st.markdown(f"""
@@ -1037,7 +1084,7 @@ elif st.session_state.active_page == "maps":
                                     st.error("Please enter a valid description (at least 10 characters).")
                                 else:
                                     from app.agents.validator import ValidatorAgent, ValidatorConfig
-                                    from app.db.models import MAPItem, EvidenceSubmission, AuditLog
+                                    from app.db.models import MAPItem, Evidence, AuditLog
                                     from sqlalchemy.orm import sessionmaker
                                     
                                     validator = ValidatorAgent(ValidatorConfig(min_description_len=50))
@@ -1047,14 +1094,14 @@ elif st.session_state.active_page == "maps":
                                         map_item = session.query(MAPItem).filter(MAPItem.id == int(row['id'])).first()
                                         val_res = validator.validate(desc, file_url)
                                         
-                                        evidence = EvidenceSubmission(
+                                        evidence = Evidence(
                                             map_id=map_item.id,
                                             description=desc,
                                             file_url=file_url,
                                             submitted_by=submitted_by,
                                             status="accepted" if val_res.is_valid else "rejected",
-                                            validation_feedback=val_res.feedback,
-                                            submitted_at=datetime.utcnow()
+                                            missing_items=None if val_res.is_valid else val_res.feedback,
+                                            created_at=datetime.utcnow()
                                         )
                                         session.add(evidence)
                                         
@@ -1072,9 +1119,8 @@ elif st.session_state.active_page == "maps":
                                             st.error("Evidence rejected. SLA reduced.")
                                             
                                         audit = AuditLog(
-                                            circular_id=map_item.circular_id,
-                                            event_type=log_event,
-                                            description=log_msg,
+                                            event=log_event,
+                                            details=log_msg,
                                             created_at=datetime.utcnow()
                                         )
                                         session.add(audit)
@@ -1170,11 +1216,15 @@ elif st.session_state.active_page == "review":
                             session.flush()
                             
                             due_date = datetime.utcnow() + timedelta(days=int(sla_days))
+                            from app.db.models import Department
+                            dept_rec = session.query(Department).filter(Department.name == assigned_dept).first()
+                            dept_id = dept_rec.id if dept_rec else None
+
                             task_item = Task(
                                 map_id=map_item.id,
-                                assigned_department=assigned_dept,
+                                department_id=dept_id,
                                 status="pending",
-                                due_date=due_date,
+                                due_at=due_date,
                                 assigned_at=datetime.utcnow()
                             )
                             session.add(task_item)
@@ -1186,9 +1236,8 @@ elif st.session_state.active_page == "review":
                             circular.status = "done"
                             
                             audit = AuditLog(
-                                circular_id=circular.id,
-                                event_type="human_review_approved",
-                                description=f"Human approved MAP {map_item.id} for Circular {circular.id}.",
+                                event="human_review_approved",
+                                details=f"Human approved MAP {map_item.id} for Circular {circular.id}.",
                                 created_at=datetime.utcnow()
                             )
                             session.add(audit)
