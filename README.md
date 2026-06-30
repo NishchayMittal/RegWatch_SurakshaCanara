@@ -34,7 +34,7 @@ Once the pipeline has completed, you can view the compliance metrics, parsed cir
 #### Method A: Start Automatically (Recommended)
 You can launch both the FastAPI backend and Next.js frontend concurrently using the provided PowerShell script from the project root:
 ```powershell
-.\RegWatch_SurakshaCanara\run_project.ps1
+.\run_project.ps1
 ```
 
 #### Method B: Start Manually (Backend and Frontend Separately)
@@ -57,7 +57,7 @@ If you prefer starting each service individually, open two terminal windows:
 2. **Terminal 2: Next.js Frontend Client**
    * Change directory to the frontend folder:
      ```bash
-     cd C:\Users\mhask\Desktop\canara\RegWatch_SurakshaCanara\frontend
+     cd frontend
      ```
    * Install Node.js packages:
      ```bash
