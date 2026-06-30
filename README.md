@@ -22,6 +22,7 @@ To achieve state-of-the-art AI routing and deduplication offline, the system rel
 To demonstrate the pipeline functioning from start to finish, run the automated demo script. This will reset the local SQLite database, load 12 mock circulars, extract their MAPs, assign departments, and print mock Slack notifications to the terminal.
 
 ```bash
+cd backend
 python run_demo.py
 ```
 
@@ -40,9 +41,9 @@ You can launch both the FastAPI backend and Next.js frontend concurrently using 
 If you prefer starting each service individually, open two terminal windows:
 
 1. **Terminal 1: FastAPI Python Backend Server**
-   * Change directory to the python project root:
+   * Change directory to the python project backend:
      ```bash
-     cd C:\Users\mhask\Desktop\canara\RegWatch_SurakshaCanara
+     cd backend
      ```
    * Install Python packages:
      ```bash

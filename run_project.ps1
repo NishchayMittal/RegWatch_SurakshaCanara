@@ -7,7 +7,9 @@ Set-Location $PSScriptRoot
 
 # Start FastAPI backend
 Write-Host "--> Launching FastAPI Backend on Port 8000..." -ForegroundColor Cyan
+cd backend
 $BackendProcess = Start-Process -NoNewWindow -FilePath "uvicorn" -ArgumentList "main:app --port 8000 --reload" -PassThru
+cd ..
 
 # Give backend a moment to boot
 Start-Sleep -Seconds 3
