@@ -45,7 +45,7 @@ def list_circulars(db: Session = Depends(get_db)):
 @router.get("/circulars/{circular_id}/maps")
 def get_maps(circular_id: int, db: Session = Depends(get_db)):
     maps = db.query(MAPItem).filter(MAPItem.circular_id == circular_id).all()
-    return [{"id": m.id, "action": m.action, "department": m.assigned_department, "status": m.status, "confidence": m.confidence} for m in maps]
+    return [{"id": m.id, "action": m.action, "department": m.assigned_department, "status": m.status, "confidence": m.confidence, "created_at": m.created_at, "sla_days": m.sla_days} for m in maps]
 
 @router.get("/queue/human-review")
 def human_review_queue(db: Session = Depends(get_db)):
@@ -65,7 +65,7 @@ def submit_evidence(map_id: int, description: str, file_url: str = None, submitt
         file_url=file_url,
         submitted_by=submitted_by,
         status="submitted",
-        created_at=datetime.utcnow()
+        created_at=datetime.now()
     )
     db.add(evidence_record)
     db.commit()
@@ -110,7 +110,7 @@ def submit_evidence(map_id: int, description: str, file_url: str = None, submitt
     audit_entry = AuditLog(
         event="evidence_submitted",
         details=f"map_id={map_id}, status={result['status']}, submitted_by={submitted_by}",
-        created_at=datetime.utcnow()
+        created_at=datetime.now()
     )
     db.add(audit_entry)
     db.commit()
@@ -192,19 +192,19 @@ def route_human_review_task(req: RouteTaskRequest, db: Session = Depends(get_db)
         sla_days=req.sla_days,
         status="pending",
         confidence=0.95,
-        created_at=datetime.utcnow()
+        created_at=datetime.now()
     )
     db.add(map_item)
     db.flush()
     
     # 4. Create the assigned department Task
-    due_date = datetime.utcnow() + timedelta(days=req.sla_days)
+    due_date = datetime.now() + timedelta(days=req.sla_days)
     task_item = Task(
         map_id=map_item.id,
         department_id=dept_id,
         status="pending",
         due_at=due_date,
-        assigned_at=datetime.utcnow()
+        assigned_at=datetime.now()
     )
     db.add(task_item)
     
@@ -220,7 +220,7 @@ def route_human_review_task(req: RouteTaskRequest, db: Session = Depends(get_db)
     audit = AuditLog(
         event="human_review_approved",
         details=f"Human approved MAP {map_item.id} for Circular {circular.id if circular else hr_map.circular_id}.",
-        created_at=datetime.utcnow()
+        created_at=datetime.now()
     )
     db.add(audit)
     db.commit()
@@ -250,7 +250,7 @@ def delete_map(map_id: int, db: Session = Depends(get_db)):
     audit = AuditLog(
         event="MAP_DELETED",
         details=f"MAP {map_id} deleted manually from dashboard.",
-        created_at=datetime.utcnow()
+        created_at=datetime.now()
     )
     db.add(audit)
     db.commit()

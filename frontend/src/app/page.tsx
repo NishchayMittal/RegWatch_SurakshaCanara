@@ -40,6 +40,7 @@ interface MAPItem {
   confidence: number;
   circular_id?: number;
   sla_days?: number;
+  created_at?: string;
 }
 
 interface Evidence {
@@ -106,6 +107,7 @@ export default function Home() {
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [viewingCircular, setViewingCircular] = useState<Circular | null>(null);
+  const [escalationToast, setEscalationToast] = useState<{mapId: number, department: string, reason: string} | null>(null);
 
   // Filtering states
   const [selectedDept, setSelectedDept] = useState("All Departments");
@@ -131,6 +133,14 @@ export default function Home() {
   const [reviewAction, setReviewAction] = useState("");
   const [reviewDept, setReviewDept] = useState("");
   const [reviewSla, setReviewSla] = useState(7);
+
+  // Helper to calculate target deadline based on created_at and sla_days
+  const getDeadlineDate = (createdStr: string | undefined, slaDays: number | undefined) => {
+    const days = slaDays || 7;
+    const baseDate = createdStr ? new Date(createdStr) : new Date("2026-07-06T18:46:29");
+    const deadline = new Date(baseDate.getTime() + days * 24 * 60 * 60 * 1000);
+    return deadline.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  };
 
   // Sync baseline data
   const loadData = async () => {
@@ -265,11 +275,22 @@ export default function Home() {
         method: "POST"
       });
       if (res.ok) {
+        const outcome = await res.json();
         setEvidenceDesc("");
         setEvidenceUrl("");
-        // Reload everything
         loadData();
-        // Refresh selected map state
+        
+        if (outcome.status === "incomplete" || outcome.status === "evidence_incomplete") {
+          setEscalationToast({
+            mapId: selectedMap.id,
+            department: selectedMap.assigned_department || "Assigned Department",
+            reason: outcome.missing_items ? outcome.missing_items.join(", ") : "Missing verification parameters"
+          });
+          setTimeout(() => {
+            setEscalationToast(null);
+          }, 8000);
+        }
+
         const updatedRes = await fetch(`${API_BASE}/maps/${selectedMap.id}/status`);
         if (updatedRes.ok) {
           const updated = await updatedRes.json();
@@ -341,6 +362,30 @@ export default function Home() {
     <div className="relative min-h-screen w-full flex flex-col justify-start items-center">
       {/* Canvas Backdrop */}
       <InteractiveCanvas isLoading={!consoleLaunched} />
+
+      {/* Escalation Notification Toast */}
+      {escalationToast && (
+        <div className="fixed top-6 right-6 z-50 animate-slide-in max-w-sm bg-red-400 border-3 border-black p-4 neo-shadow rounded-[12px] flex flex-col gap-2">
+          <div className="flex justify-between items-center pb-1 border-b border-black/10">
+            <span className="font-extrabold text-xs uppercase tracking-wider text-neo-dark flex items-center gap-1.5">
+              <AlertTriangle className="w-4 h-4 text-neo-dark animate-pulse" />
+              Notifier Agent Alert
+            </span>
+            <button 
+              onClick={() => setEscalationToast(null)}
+              className="text-neo-dark font-extrabold hover:text-black text-xs cursor-pointer bg-transparent border-none p-0"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="text-xs font-extrabold text-neo-dark leading-snug">
+            MAP {escalationToast.mapId} has been <span className="underline decoration-2">RE-ESCALATED</span> to the <span className="uppercase">{escalationToast.department}</span> department.
+          </p>
+          <div className="bg-white/40 border border-black/20 p-2 text-[10px] font-bold font-mono text-gray-700">
+            Reason: Missing {escalationToast.reason}
+          </div>
+        </div>
+      )}
 
       {/* Welcome Screen Flow (Image 2) */}
       {!consoleLaunched ? (
@@ -531,9 +576,12 @@ export default function Home() {
                       </div>
                       <p className="font-bold text-sm text-neo-dark leading-snug">{m.action}</p>
                       
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between items-center gap-2">
                         <span className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 border border-black ${m.status === "complete" || m.status === "accepted" ? "bg-neo-mint" : m.status === "submitted" ? "bg-neo-sky" : m.status === "evidence_incomplete" || m.status === "incomplete" ? "bg-red-400" : "bg-neo-butter"}`}>
                           {m.status.toUpperCase()}
+                        </span>
+                        <span className="text-[10px] font-extrabold text-gray-500 bg-stone-100 border border-black px-1.5 py-0.5 rounded-sm font-mono whitespace-nowrap">
+                          ⏰ Due {getDeadlineDate(m.created_at, m.sla_days)}
                         </span>
                         <button 
                           onClick={() => setSelectedMap(m)}
@@ -565,9 +613,19 @@ export default function Home() {
                 ) : (
                   <div className="flex flex-col gap-4">
                     {/* Action obligations info */}
-                    <div className="p-3 border-2 border-black bg-stone-50">
-                      <span className="text-[10px] font-mono font-bold text-gray-500 block">SELECTED MAP {selectedMap.id} OBLIGATION:</span>
-                      <p className="font-extrabold text-xs mt-1.5 text-neo-dark">{selectedMap.action}</p>
+                    <div className="p-3 border-2 border-black bg-stone-50 flex flex-col gap-2">
+                      <div>
+                        <span className="text-[10px] font-mono font-bold text-gray-500 block">SELECTED MAP {selectedMap.id} OBLIGATION:</span>
+                        <p className="font-extrabold text-xs mt-1.5 text-neo-dark">{selectedMap.action}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2 border-t border-black/10 pt-2">
+                        <span className="text-[10px] font-extrabold bg-neo-butter border border-black px-2 py-0.5 font-mono">
+                          SLA Limit: {selectedMap.sla_days || 7} Days
+                        </span>
+                        <span className="text-[10px] font-extrabold bg-red-300 border border-black px-2 py-0.5 font-mono">
+                          Target Deadline: {getDeadlineDate(selectedMap.created_at, selectedMap.sla_days)}
+                        </span>
+                      </div>
                     </div>
 
                     {(() => {
@@ -886,9 +944,12 @@ export default function Home() {
                       </div>
                       <p className="font-bold text-xs text-neo-dark mt-2 leading-normal">{m.action}</p>
                     </div>
-                    <div className="flex justify-between items-center border-t border-black/10 pt-2.5">
+                    <div className="flex justify-between items-center border-t border-black/10 pt-2.5 gap-2">
                       <span className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 border border-black ${m.status === "complete" || m.status === "accepted" ? "bg-neo-mint" : "bg-neo-butter"}`}>
                         {m.status.toUpperCase()}
+                      </span>
+                      <span className="text-[10px] font-extrabold text-gray-500 bg-stone-100 border border-black px-1.5 py-0.5 rounded-sm font-mono whitespace-nowrap">
+                        ⏰ Due {getDeadlineDate(m.created_at, m.sla_days)}
                       </span>
                       <button 
                         onClick={() => {
@@ -921,7 +982,7 @@ export default function Home() {
                       {log.event}
                     </span>
                     <span className="text-[8px] text-gray-400 font-mono">
-                      {new Date(log.created_at).toLocaleTimeString()}
+                      {new Date(log.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: true })}
                     </span>
                   </div>
                   <p className="font-semibold text-gray-700 mt-1 line-clamp-1">{log.details}</p>
