@@ -28,6 +28,7 @@ interface Circular {
   url: string;
   title: string;
   status: string;
+  raw_text?: string;
 }
 
 interface MAPItem {
@@ -77,6 +78,18 @@ interface Stats {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
+const getCleanRawExtraction = (rawText: string) => {
+  try {
+    const parsed = JSON.parse(rawText);
+    if (parsed && Array.isArray(parsed.maps)) {
+      return parsed.maps.map((m: any) => m.action).join("\n");
+    }
+  } catch (e) {
+    // Fail-safe: if already plain text or invalid JSON
+  }
+  return rawText;
+};
+
 export default function Home() {
   const [consoleLaunched, setConsoleLaunched] = useState(false);
   const [activeTab, setActiveTab] = useState<"action_points" | "human_review" | "circulars" | "search_maps">("action_points");
@@ -91,6 +104,7 @@ export default function Home() {
   const [selectedReviewItem, setSelectedReviewItem] = useState<ReviewItem | null>(null);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
+  const [viewingCircular, setViewingCircular] = useState<Circular | null>(null);
 
   // Filtering states
   const [selectedDept, setSelectedDept] = useState("All Departments");
@@ -149,7 +163,7 @@ export default function Home() {
       setReviewItems(reviewRes.ok ? reviewData : []);
       if (reviewData.length > 0 && !selectedReviewItem) {
         setSelectedReviewItem(reviewData[0]);
-        setReviewAction(reviewData[0].raw_extraction);
+        setReviewAction(getCleanRawExtraction(reviewData[0].raw_extraction));
       }
 
       const deptsRes = await fetch(`${API_BASE}/departments`);
@@ -264,7 +278,7 @@ export default function Home() {
         setReviewItems(remaining);
         if (remaining.length > 0) {
           setSelectedReviewItem(remaining[0]);
-          setReviewAction(remaining[0].raw_extraction);
+          setReviewAction(getCleanRawExtraction(remaining[0].raw_extraction));
         } else {
           setSelectedReviewItem(null);
           setReviewAction("");
@@ -529,6 +543,26 @@ export default function Home() {
                       <p className="font-extrabold text-xs mt-1.5 text-neo-dark">{selectedMap.action}</p>
                     </div>
 
+                    {(() => {
+                      const relatedCircular = circulars.find(c => c.id === selectedMap.circular_id);
+                      return relatedCircular && relatedCircular.url && relatedCircular.url.startsWith("http") ? (
+                        <div className="p-3 border-2 border-black bg-neo-sky/20 flex flex-col gap-1">
+                          <span className="text-[10px] font-mono font-bold text-gray-500 block">SOURCE CIRCULAR:</span>
+                          <span className="font-bold text-xs text-neo-dark block line-clamp-1">{relatedCircular.title}</span>
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setViewingCircular(relatedCircular);
+                            }}
+                            className="text-[10px] font-extrabold text-blue-600 underline flex items-center gap-1 hover:text-blue-800 mt-0.5 cursor-pointer bg-transparent border-none p-0 align-baseline text-left"
+                          >
+                            <FileText className="w-3.5 h-3.5" />
+                            View Circular Text
+                          </button>
+                        </div>
+                      ) : null;
+                    })()}
+
                     {/* Evidence History lists */}
                     {evidenceHistory.length > 0 && (
                       <div className="flex flex-col gap-2">
@@ -636,7 +670,7 @@ export default function Home() {
                         key={item.id}
                         onClick={() => {
                           setSelectedReviewItem(item);
-                          setReviewAction(item.raw_extraction);
+                          setReviewAction(getCleanRawExtraction(item.raw_extraction));
                         }}
                         className={`p-3 border border-black cursor-pointer transition-all ${selectedReviewItem?.id === item.id ? "bg-neo-sky" : "bg-white hover:bg-stone-50"}`}
                       >
@@ -646,7 +680,7 @@ export default function Home() {
                             Conf: {Math.round(item.confidence * 100)}%
                           </span>
                         </div>
-                        <p className="font-extrabold text-xs text-neo-dark line-clamp-2">{item.raw_extraction}</p>
+                        <p className="font-extrabold text-xs text-neo-dark line-clamp-2">{getCleanRawExtraction(item.raw_extraction)}</p>
                       </div>
                     ))}
                   </div>
@@ -655,7 +689,22 @@ export default function Home() {
                   <div className="lg:col-span-8">
                     {selectedReviewItem ? (
                       <form onSubmit={submitHumanRouting} className="border-2 border-black p-5 bg-white flex flex-col gap-4">
-                        <h3 className="font-extrabold text-md border-b border-black pb-2">Resolve Extraction Route</h3>
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-black pb-2 gap-2">
+                          <h3 className="font-extrabold text-md">Resolve Extraction Route</h3>
+                          {(() => {
+                            const relatedCircular = circulars.find(c => c.id === selectedReviewItem.circular_id);
+                            return relatedCircular ? (
+                              <button 
+                                type="button"
+                                onClick={() => setViewingCircular(relatedCircular)}
+                                className="px-3 py-1 bg-[#b7eaf6] hover:bg-neo-sky text-[10px] font-extrabold border-2 border-black rounded-[6px] neo-shadow-sm flex items-center gap-1 cursor-pointer transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:neo-shadow active:translate-x-[1px] active:translate-y-[1px] active:neo-shadow-sm"
+                              >
+                                <FileText className="w-3.5 h-3.5" />
+                                View Circular Text
+                              </button>
+                            ) : null;
+                          })()}
+                        </div>
                         
                         <div className="flex flex-col gap-1">
                           <label className="text-xs font-bold text-gray-700">Raw Extraction Text (Edit & Refine) *</label>
@@ -747,13 +796,22 @@ export default function Home() {
               {/* Circulars List */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[460px] overflow-y-auto">
                 {circulars.map(c => (
-                  <div key={c.id} className="p-4 border-2 border-black bg-white neo-shadow-sm flex flex-col justify-between">
+                  <div key={c.id} className="p-4 border-2 border-black bg-white neo-shadow-sm flex flex-col justify-between gap-3">
                     <div>
                       <div className="flex justify-between items-center text-[10px] font-extrabold font-mono text-gray-500">
                         <span>ID: {c.id}</span>
                         <span className={`px-1.5 py-0.5 border border-black uppercase ${c.status === "done" ? "bg-neo-mint" : "bg-neo-butter"}`}>{c.status}</span>
                       </div>
                       <h4 className="font-extrabold text-sm text-neo-dark mt-2 leading-snug">{c.title}</h4>
+                    </div>
+                    <div className="border-t border-black/10 pt-2 flex justify-end">
+                      <button 
+                        onClick={() => setViewingCircular(c)}
+                        className="text-[10px] font-extrabold text-blue-600 underline hover:text-blue-800 flex items-center gap-1 cursor-pointer bg-transparent border-none p-0 align-baseline"
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        View Database Circular Text
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -830,6 +888,52 @@ export default function Home() {
             </div>
           </div>
 
+        </div>
+      )}
+
+      {/* Modal overlay to view circular raw text */}
+      {viewingCircular && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-white border-3 border-black neo-shadow-lg w-full max-w-3xl max-h-[85vh] flex flex-col rounded-[16px] overflow-hidden select-text">
+            {/* Modal Header */}
+            <div className="bg-[#b7eaf6] border-b-3 border-black p-4 flex justify-between items-center">
+              <div>
+                <span className="text-[10px] font-mono font-extrabold bg-black text-white px-2 py-0.5 border border-black rounded-sm">
+                  CIRCULAR ID: {viewingCircular.id}
+                </span>
+                <h3 className="font-extrabold text-sm text-neo-dark mt-1 line-clamp-1">
+                  {viewingCircular.title}
+                </h3>
+              </div>
+              <button 
+                onClick={() => setViewingCircular(null)}
+                className="bg-white border-2 border-black font-extrabold text-xs px-3 py-1.5 rounded-[6px] neo-shadow-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:neo-shadow active:translate-x-[1px] active:translate-y-[1px] active:neo-shadow-sm cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto bg-stone-50 flex-grow font-mono text-xs text-gray-800 whitespace-pre-wrap leading-relaxed max-h-[60vh]">
+              {viewingCircular.raw_text || "No text content available in the database for this circular."}
+            </div>
+            
+            {/* Modal Footer */}
+            {viewingCircular.url && viewingCircular.url.startsWith("http") && (
+              <div className="border-t-3 border-black p-4 bg-white flex justify-between items-center">
+                <span className="text-[10px] text-gray-500 font-bold truncate max-w-md">Source: {viewingCircular.url}</span>
+                <a 
+                  href={viewingCircular.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-white text-xs font-extrabold border-2 border-black rounded-[8px] neo-shadow-sm flex items-center gap-1 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:neo-shadow active:translate-x-[1px] active:translate-y-[1px] active:neo-shadow-sm cursor-pointer"
+                >
+                  <FileText className="w-4 h-4" />
+                  Open Source Link
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

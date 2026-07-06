@@ -40,7 +40,7 @@ def run_pipeline(url: str, db: Session = Depends(get_db)):
 @router.get("/circulars")
 def list_circulars(db: Session = Depends(get_db)):
     circulars = db.query(Circular).all()
-    return [{"id": c.id, "url": c.url, "title": c.title, "status": c.status} for c in circulars]
+    return [{"id": c.id, "url": c.url, "title": c.title, "status": c.status, "raw_text": c.raw_text} for c in circulars]
 
 @router.get("/circulars/{circular_id}/maps")
 def get_maps(circular_id: int, db: Session = Depends(get_db)):
@@ -226,3 +226,33 @@ def route_human_review_task(req: RouteTaskRequest, db: Session = Depends(get_db)
     db.commit()
     
     return {"status": "ok", "map_id": map_item.id, "task_id": task_item.id}
+
+@router.delete("/maps/{map_id}")
+def delete_map(map_id: int, db: Session = Depends(get_db)):
+    from app.db.models import HumanReviewQueue
+    map_item = db.query(MAPItem).filter(MAPItem.id == map_id).first()
+    if not map_item:
+        return {"error": "MAP item not found", "ok": False}
+        
+    # Delete related tasks
+    db.query(Task).filter(Task.map_id == map_id).delete()
+    
+    # Delete related evidence
+    db.query(Evidence).filter(Evidence.map_id == map_id).delete()
+    
+    # Delete related human review queue items if any
+    db.query(HumanReviewQueue).filter(HumanReviewQueue.map_id == map_id).delete()
+    
+    # Delete map item itself
+    db.delete(map_item)
+    
+    # Add audit log
+    audit = AuditLog(
+        event="MAP_DELETED",
+        details=f"MAP {map_id} deleted manually from dashboard.",
+        created_at=datetime.utcnow()
+    )
+    db.add(audit)
+    db.commit()
+    
+    return {"status": "ok", "ok": True}
