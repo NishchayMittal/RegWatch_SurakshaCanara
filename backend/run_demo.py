@@ -477,7 +477,7 @@ def print_summary(db, total_maps, total_tasks, dupes, human_reviews, results):
     print(f"  {'Evidence Incomplete (Rejected)':<30} {RED}{incomplete_maps}{RESET}")
 
     print(f"\n  {DIM}DB Path: {os.path.abspath('regwatch.db')}{RESET}")
-    print(f"\n  {GREEN}{BOLD}Next step → streamlit run dashboard.py{RESET}\n")
+    print(f"\n  {GREEN}{BOLD}Next step → run ./run_project.ps1{RESET}\n")
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
