@@ -18,7 +18,8 @@ import {
   PlusCircle, 
   Check, 
   Send,
-  Eye
+  Eye,
+  Trash2
 } from "lucide-react";
 import InteractiveCanvas from "@/components/InteractiveCanvas";
 
@@ -76,7 +77,7 @@ interface Stats {
   needs_review: number;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
 const getCleanRawExtraction = (rawText: string) => {
   try {
@@ -119,6 +120,7 @@ export default function Home() {
   const [pipelineLoading, setPipelineLoading] = useState(false);
   const [submittingEvidence, setSubmittingEvidence] = useState(false);
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [deletingMap, setDeletingMap] = useState(false);
 
   // Evidence Form Inputs
   const [evidenceDesc, setEvidenceDesc] = useState("");
@@ -200,6 +202,31 @@ export default function Home() {
       setEvidenceHistory([]);
     }
   }, [selectedMap]);
+
+  // Handle manual deletion of a MAPItem
+  const deleteSelectedMap = async () => {
+    if (!selectedMap) return;
+    const confirmDelete = window.confirm("Are you sure you want to delete this compliance obligation? This will also remove all related verification tasks and evidence records.");
+    if (!confirmDelete) return;
+
+    setDeletingMap(true);
+    try {
+      const res = await fetch(`${API_BASE}/maps/${selectedMap.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setSelectedMap(null);
+        loadData();
+      } else {
+        alert("Failed to delete obligation.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting obligation.");
+    } finally {
+      setDeletingMap(false);
+    }
+  };
 
   // Handle pipeline ingestion trigger
   const runPipelineIngestion = async (e: React.FormEvent) => {
@@ -644,6 +671,21 @@ export default function Home() {
                         <p className="font-extrabold text-xs text-neo-dark">Obligation checklist fully complete.</p>
                       </div>
                     )}
+
+                    <div className="mt-4 border-t border-black/10 pt-4">
+                      <button
+                        onClick={deleteSelectedMap}
+                        disabled={deletingMap}
+                        className="w-full py-2 bg-red-400 text-xs font-extrabold neo-button flex justify-center items-center gap-1.5 border-2 border-black cursor-pointer hover:translate-x-[-1px] hover:translate-y-[-1px] hover:neo-shadow active:translate-x-[1px] active:translate-y-[1px] transition-all"
+                      >
+                        {deletingMap ? (
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-3.5 h-3.5" />
+                        )}
+                        Delete Compliance Obligation
+                      </button>
+                    </div>
 
                   </div>
                 )}
