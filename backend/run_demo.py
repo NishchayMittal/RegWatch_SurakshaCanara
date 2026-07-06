@@ -4,7 +4,7 @@ run_demo.py — RegWatch Pipeline Demo (SQLAlchemy & Validator Flow Integration)
 Run:
     python run_demo.py
 Then:
-    streamlit run dashboard.py
+    run ./run_project.ps1
 """
 
 import json
